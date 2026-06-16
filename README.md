@@ -35,10 +35,12 @@ La aplicación está organizada en módulos independientes que los estudiantes p
 - Combinación secreta para acceso admin
 
 ### 2. `moderator.js` - Moderación de Contenido
-- Integra con **Perspective API** (gratuita de Google)
+- Integra con **Hugging Face Inference API** (gratuita, reemplaza Perspective API)
+- Modelo: `martin-ha/toxic-comment-model` (soporta español e inglés)
 - Detecta lenguaje tóxico, ofensivo, insultos, amenazas
 - Guarda todo en Google Sheets pero oculta contenido inapropiado de la UI
 - Registra contenido marcado para revisión del administrador
+- Fallback graceful si la API falla o no hay token configurado
 
 ### 3. `cloudManager.js` - Gestión de Nubes
 - Crea y gestiona las nubes emocionales
@@ -117,20 +119,42 @@ La aplicación está organizada en módulos independientes que los estudiantes p
    - Configuración de mensajes
    - Exportar datos
 
-## 🔐 Configuración de Perspective API
+## 🔐 Configuración de Moderación de Contenido
 
-Para habilitar la moderación de contenido:
+### Opción Recomendada: Hugging Face (Gratuita)
 
-1. Obtener API key gratuita en: https://perspectiveapi.com/
-2. Editar `js/config.js`:
+**Importante:** Perspective API está discontinándose. Usamos Hugging Face como reemplazo.
+
+1. **Obtener token gratuito:**
+   - Crear cuenta en https://huggingface.co/join
+   - Ir a https://huggingface.co/settings/tokens
+   - Crear nuevo token (tipo `read`)
+   - Copiar el token generado
+
+2. **Configurar en la aplicación:**
+   - Abrir la web y presionar `Ctrl + Shift + A`
+   - Ingresar al panel de admin
+   - Ir a sección "⚙️ Configuración"
+   - Pegar el token en el campo correspondiente
+   - Click en "Guardar Configuración"
+
+3. **Alternativa: Editar config.js directamente:**
 ```javascript
 MODERATION: {
     ENABLED: true,
-    API_KEY: 'TU_API_KEY_AQUI',
+    HF_API_URL: 'https://api-inference.huggingface.co/models/martin-ha/toxic-comment-model',
+    HF_API_TOKEN: 'TU_TOKEN_AQUI',
     TOXICITY_THRESHOLD: 0.7,
     // ...
 }
 ```
+
+📖 **Ver guía completa:** [MODERATION_SETUP.md](MODERATION_SETUP.md)
+
+### Otras Opciones Disponibles
+
+- **Detoxify (Python):** Para backend propio, funciona offline
+- **Azure Content Safety:** 5,000 llamadas gratis/mes
 
 ## 📝 Extender la Aplicación (Para Estudiantes)
 

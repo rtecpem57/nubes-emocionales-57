@@ -1,13 +1,14 @@
 /**
  * Módulo de Moderación de Contenido
- * Integra con Perspective API (gratuita de Google) para detectar lenguaje ofensivo
+ * Integra con Hugging Face Inference API (gratuita) para detectar lenguaje ofensivo
+ * Modelo: martin-ha/toxic-comment-model (soporta español e inglés)
  */
 
 class ContentModerator {
     constructor(config) {
         this.config = config;
-        this.apiKey = config.MODERATION.API_KEY;
-        this.apiUrl = config.MODERATION.API_URL;
+        this.apiToken = config.MODERATION.HF_API_TOKEN;
+        this.apiUrl = config.MODERATION.HF_API_URL;
         this.threshold = config.MODERATION.TOXICITY_THRESHOLD;
         this.enabled = config.MODERATION.ENABLED;
     }
@@ -18,57 +19,56 @@ class ContentModerator {
      * @returns {Promise<object>} - Resultado del análisis
      */
     async analyzeText(text) {
-        if (!this.enabled || !this.apiKey) {
+        if (!this.enabled || !this.apiToken) {
             return { isToxic: false, score: 0, saveOnly: false };
         }
 
         try {
-            const response = await fetch(`${this.apiUrl}?key=${this.apiKey}`, {
+            const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.apiToken}`
                 },
                 body: JSON.stringify({
-                    comment: {
-                        text: text
-                    },
-                    requestedAttributes: {
-                        TOXICITY: {},
-                        SEVERE_TOXICITY: {},
-                        INSULT: {},
-                        THREAT: {},
-                        PROFANITY: {}
+                    inputs: text,
+                    parameters: {
+                        wait_for_model: true
                     }
                 })
             });
 
-            const data = await response.json();
-
-            if (data.error) {
-                console.error('Error en Perspective API:', data.error);
-                return { isToxic: false, score: 0, saveOnly: false, error: data.error.message };
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // Calcular el puntaje máximo entre todos los atributos
-            const maxScore = Math.max(
-                data.attributeScores.TOXICITY?.summaryScore?.value || 0,
-                data.attributeScores.SEVERE_TOXICITY?.summaryScore?.value || 0,
-                data.attributeScores.INSULT?.summaryScore?.value || 0,
-                data.attributeScores.THREAT?.summaryScore?.value || 0,
-                data.attributeScores.PROFANITY?.summaryScore?.value || 0
-            );
+            const data = await response.json();
 
-            const isToxic = maxScore >= this.threshold;
+            // Hugging Face devuelve array de resultados con etiquetas y scores
+            // Formato: [{label: 'toxic', score: 0.95}, {label: 'non-toxic', score: 0.05}]
+            let toxicScore = 0;
+            
+            if (Array.isArray(data)) {
+                const toxicResult = data.find(item => 
+                    item.label.toLowerCase().includes('toxic') && 
+                    !item.label.toLowerCase().includes('non')
+                );
+                toxicScore = toxicResult ? toxicResult.score : 0;
+            } else if (data.toxic) {
+                toxicScore = data.toxic;
+            }
+
+            const isToxic = toxicScore >= this.threshold;
 
             return {
                 isToxic,
-                score: maxScore,
+                score: toxicScore,
                 saveOnly: isToxic, // Si es tóxico, solo guardar en Sheets, no mostrar
-                attributeScores: data.attributeScores
+                rawResponse: data
             };
 
         } catch (error) {
-            console.error('Error al analizar contenido:', error);
+            console.error('Error al analizar contenido con Hugging Face:', error);
             // En caso de error, permitir el contenido pero registrar el incidente
             return { isToxic: false, score: 0, saveOnly: false, error: error.message };
         }

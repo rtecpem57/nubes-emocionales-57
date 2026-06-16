@@ -34,11 +34,11 @@ const APP_CONFIG = {
         { feeling: "Un poco ansioso", reason: "Tengo una presentación importante mañana." }
     ],
     
-    // Configuración de moderación de contenido
+    // Configuración de moderación de contenido con Hugging Face
     MODERATION: {
         ENABLED: true,
-        API_URL: 'https://api.perspectiveapi.com/v1alpha1/comments:analyze',
-        API_KEY: '', // Debe ser configurado por el administrador
+        HF_API_URL: 'https://api-inference.huggingface.co/models/martin-ha/toxic-comment-model',
+        HF_API_TOKEN: '', // Debe ser configurado por el administrador (gratuito en huggingface.co)
         TOXICITY_THRESHOLD: 0.7, // Umbral de toxicidad (0-1)
         SAVE_TO_SHEET_ALWAYS: true, // Siempre guardar en Google Sheets
         DISPLAY_IF_FLAGGED: false // No mostrar en nubes si es tóxico
