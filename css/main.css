@@ -1,0 +1,130 @@
+/**
+ * Estilos principales de Nubes Emocionales
+ * Este archivo puede ser expandido por los estudiantes para agregar nuevos módulos
+ */
+
+/* ============================================
+   VARIABLES GLOBALES
+   ============================================ */
+:root {
+    --primary-color: #ff3366;
+    --secondary-color: #33ffcc;
+    --tertiary-color: #ffcc33;
+    --dark-color: #222;
+    --light-color: #fff;
+    --heart-color: #ff69b4;
+    
+    /* Espaciado */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 30px;
+    --spacing-xl: 50px;
+    
+    /* Border Radius */
+    --radius-sm: 10px;
+    --radius-md: 20px;
+    --radius-lg: 50px;
+    --radius-full: 50%;
+}
+
+/* ============================================
+   ESTILOS BASE
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Fredoka One', cursive;
+    background: linear-gradient(135deg, #ff3366 0%, #33ffcc 50%, #ffcc33 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ============================================
+   UTILIDADES
+   ============================================ */
+.text-center {
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ============================================
+   MÓDULO DE EJEMPLO PARA ESTUDIANTES
+   ============================================ */
+/* 
+   Los estudiantes pueden agregar nuevos módulos siguiendo este patrón:
+   
+   .nuevo-modulo {
+       // Estilos del módulo
+   }
+   
+   .nuevo-modulo__elemento {
+       // Elementos internos del módulo
+   }
+   
+   .nuevo-modulo--variante {
+       // Variantes del módulo
+   }
+*/
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    :root {
+        --spacing-xl: 30px;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    .form-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .input-module {
+        max-width: 90%;
+    }
+}
+
+/* ============================================
+   ACCESIBILIDAD
+   ============================================ */
+/* Mejorar contraste para usuarios con dificultades visuales */
+@media (prefers-contrast: high) {
+    :root {
+        --primary-color: #ff0040;
+        --secondary-color: #00ffcc;
+        --tertiary-color: #ffcc00;
+    }
+}
+
+/* Reducir movimiento para usuarios con sensibilidad */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -7,7 +7,12 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='face'><stop offset='0%' stop-color='%2333ffcc'/><stop offset='100%' stop-color='%2322ccaa'/></radialGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23face)'/><circle cx='50' cy='50' r='35' fill='white'/><g fill='black'><path d='M30 35 Q35 45 40 35 Q35 40 30 35'/><path d='M60 35 Q65 45 70 35 Q65 40 60 35'/><path d='M25 60 Q50 75 75 60' stroke='black' stroke-width='3' fill='none'/><rect x='28' y='32' width='14' height='8' rx='2' fill='%23333'/><rect x='58' y='32' width='14' height='8' rx='2' fill='%23333'/></g></svg>">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='face'><stop offset='0%' stop-color='%2333ffcc'/><stop offset='100%' stop-color='%2322ccaa'/></radialGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23face)'/><circle cx='50' cy='50' r='35' fill='white'/><g fill='black'><path d='M30 35 Q35 45 40 35 Q35 40 30 35'/><path d='M60 35 Q65 45 70 35 Q65 40 60 35'/><path d='M25 60 Q50 75 75 60' stroke='black' stroke-width='3' fill='none'/><rect x='28' y='32' width='14' height='8' rx='2' fill='%23333'/><rect x='58' y='32' width='14' height='8' rx='2' fill='%23333'/></g></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Distressed&family=Permanent+Marker&family=Shadows+Into+Light&family=Caveat:wght@400;700&family=Righteous&family=Bungee&family=Creepster&family=Fredoka+One&display=swap" rel="stylesheet">
+    
+    <!-- Estilos principales -->
+    <link rel="stylesheet" href="css/main.css">
+    
     <style>
+        /* Estilos críticos inline para carga rápida */
         :root {
             --primary-color: #ff3366;
             --secondary-color: #33ffcc;
@@ -30,7 +35,7 @@
             overflow-x: hidden;
             position: relative;
         }
-        
+
         /* Bobblehead */
         .bobblehead-container {
             position: fixed;
@@ -86,7 +91,7 @@
             25% { transform: rotate(5deg); }
             75% { transform: rotate(-5deg); }
         }
-        
+
         /* Header */
         header {
             text-align: center;
@@ -115,7 +120,7 @@
             0%, 100% { transform: rotate(-3deg) scale(1); }
             50% { transform: rotate(-3deg) scale(1.05); }
         }
-        
+
         /* Form Container */
         .form-container {
             display: flex;
@@ -126,7 +131,7 @@
             margin: 20px auto;
             max-width: 1200px;
         }
-        
+
         /* Input Module */
         .input-module {
             background: rgba(255, 255, 255, 0.9);
@@ -135,7 +140,6 @@
             width: 100%;
             max-width: 500px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transform: rotate(random(-5, 5)deg);
             position: relative;
             transition: transform 0.3s ease;
         }
@@ -190,7 +194,7 @@
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 0 0 3px var(--tertiary-color);
         }
-        
+
         /* Submit Button */
         .submit-container {
             text-align: center;
@@ -221,7 +225,12 @@
             transform: scale(0.98);
         }
         
-        /* What We've Heard Section */
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Heard Section */
         .heard-section {
             padding: 50px 20px;
             margin-top: 50px;
@@ -321,7 +330,7 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
         }
-        
+
         /* Heart Animation */
         .heart {
             position: absolute;
@@ -372,7 +381,7 @@
                 transform: translate(-50%, -50%) scale(0);
             }
         }
-        
+
         /* Cloud Pop Animation */
         .cloud.pop {
             animation: cloudPop 0.5s ease-in-out;
@@ -383,7 +392,7 @@
             50% { transform: scale(0.8); opacity: 0.5; }
             100% { transform: scale(1); opacity: 1; }
         }
-        
+
         /* Notification */
         .notification {
             position: fixed;
@@ -403,7 +412,7 @@
         .notification.show {
             top: 30px;
         }
-        
+
         /* Loading indicator */
         .loading {
             display: none;
@@ -431,7 +440,7 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
+
         /* Responsive Design */
         @media (max-width: 768px) {
             h1 {
@@ -451,6 +460,45 @@
                 max-width: 250px;
                 font-size: 0.9rem;
             }
+        }
+
+        /* Juego de Nubes - Estilos específicos */
+        #cloud-game-section {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30vh;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            z-index: 500;
+            overflow: hidden;
+            border-top: 2px dashed var(--secondary-color);
+        }
+        
+        .game-cloud {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: var(--cloud-color, white);
+        }
+        
+        .game-cloud-green {
+            background: var(--secondary-color);
+        }
+        
+        .game-cloud-white {
+            background: white;
+        }
+        
+        .game-cloud-fading {
+            opacity: 0 !important;
+            transform: scale(0) !important;
         }
     </style>
 </head>
@@ -501,461 +549,19 @@
         <div class="loading-spinner"></div>
     </div>
     
-    <script>
-        // Configuración de Google Sheets - URL de Web App de Apps Script
-        const GOOGLE_SHEETS_CONFIG = {
-            webAppUrl: 'https://script.google.com/macros/s/AKfycbzO7ghj0Kh5PkFT-pV4qMYNDDcmE6Ou8bgZBB_r_eN_dGAI1ggADdkQUT4mUyOWWCGK/exec'
-        };
-        
-        // Fuentes aleatorias para las nubes
-        const randomFonts = [
-            "'Permanent Marker', cursive",
-            "'Shadows Into Light', cursive",
-            "'Caveat', cursive",
-            "'Righteous', cursive",
-            "'Bungee', cursive",
-            "'Creepster', cursive",
-            "'Fredoka One', cursive"
-        ];
-        
-        // Datos de ejemplo para demostración
-        const sampleResponses = [
-            { feeling: "¡Hoy me siento feliz!", reason: "El sol está brillando y vi a mis amigos." },
-            { feeling: "Un poco estresado.", reason: "El trabajo ha sido muy exigente últimamente." },
-            { feeling: "¡Emocionado por el fin de semana!", reason: "Tengo planes para hacer senderismo y es mi actividad favorita." },
-            { feeling: "Sintiéndome agradecido", reason: "Mi familia me sorprendió con un regalo detallado." },
-            { feeling: "Un poco ansioso", reason: "Tengo una presentación importante mañana." }
-        ];
-        
-        // Gestión de nubes
-        const maxClouds = 8;
-        let cloudZIndex = 1;
-        
-        // Inicializar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            // Cargar respuestas de ejemplo para demostración
-            loadSampleResponses();
-            
-            // Configurar event listeners
-            document.getElementById('submit-btn').addEventListener('click', submitForm);
-            
-            // Mover bobblehead al input activo
-            document.getElementById('feeling-input').addEventListener('focus', moveBobblehead);
-            document.getElementById('reason-input').addEventListener('focus', moveBobblehead);
-            
-            // Verificar datos offline para sincronizar
-            checkAndSyncOfflineData();
-        });
-        
-        // Mover bobblehead al input enfocado
-        function moveBobblehead(e) {
-            const bobblehead = document.getElementById('bobblehead');
-            const inputRect = e.target.getBoundingClientRect();
-            
-            bobblehead.style.left = `${inputRect.left - 120}px`;
-            bobblehead.style.top = `${inputRect.top - 50}px`;
-        }
-        
-        // Enviar el formulario
-        async function submitForm() {
-            const feeling = document.getElementById('feeling-input').value.trim();
-            const reason = document.getElementById('reason-input').value.trim();
-            
-            if (!feeling) {
-                showNotification('¡Contanos cómo te sentís!', 'error');
-                return;
-            }
-            
-            // Deshabilitar botón y mostrar loading
-            const submitBtn = document.getElementById('submit-btn');
-            submitBtn.disabled = true;
-            showLoading(true);
-            
-            try {
-                // Enviar a Google Sheets
-                await sendToGoogleSheets(feeling, reason);
-                
-                // Crear animación de nube
-                createCloud(feeling, reason);
-                
-                // Limpiar el formulario DESPUÉS de éxito
-                document.getElementById('feeling-input').value = '';
-                document.getElementById('reason-input').value = '';
-                
-                // Resetear posición del bobblehead
-                const bobblehead = document.getElementById('bobblehead');
-                bobblehead.style.left = '';
-                bobblehead.style.top = '';
-                
-            } catch (error) {
-                console.error('Error de envío:', error);
-                
-                // Verificar si realmente estamos offline
-                if (!navigator.onLine) {
-                    // Solo guardar offline si realmente no hay conexión
-                    saveOfflineData(feeling, reason);
-                    showNotification('Guardado offline. Se sincronizará cuando vuelva la conexión.', 'info');
-                } else {
-                    // Si estamos online pero hay error, mostrar error de servidor
-                    showNotification('Error del servidor. Intentá de nuevo en unos minutos.', 'error');
-                }
-            } finally {
-                submitBtn.disabled = false;
-                showLoading(false);
-            }
-        }
-        
-        // Enviar datos a Google Sheets via Apps Script - Método mejorado
-        async function sendToGoogleSheets(feeling, reason) {
-            const formData = new FormData();
-            formData.append('feeling', feeling);
-            formData.append('reason', reason);
-            formData.append('timestamp', new Date().toISOString());
-            
-            const response = await fetch(GOOGLE_SHEETS_CONFIG.webAppUrl, {
-                method: 'POST',
-                body: formData
-            });
-            
-            const result = await response.json();
-            
-            if (result.status === 'success') {
-                showNotification('¡Gracias por compartir! Tus sentimientos fueron registrados.', 'success');
-            } else {
-                throw new Error(result.message || 'Error desconocido');
-            }
-        }
-        
-        // Guardar datos offline para sincronizar después
-        function saveOfflineData(feeling, reason) {
-            const offlineData = {
-                timestamp: new Date().toISOString(),
-                feeling: feeling,
-                reason: reason
-            };
-            
-            const storedData = JSON.parse(localStorage.getItem('feelingsPollOffline') || '[]');
-            storedData.push(offlineData);
-            localStorage.setItem('feelingsPollOffline', JSON.stringify(storedData));
-        }
-        
-        // Verificar y sincronizar datos offline
-        async function checkAndSyncOfflineData() {
-            if (!navigator.onLine) {
-                return;
-            }
-            
-            const offlineData = JSON.parse(localStorage.getItem('feelingsPollOffline') || '[]');
-            
-            if (offlineData.length > 0) {
-                showNotification(`Sincronizando ${offlineData.length} envíos offline...`, 'info');
-                
-                let syncedCount = 0;
-                for (const data of offlineData) {
-                    try {
-                        await sendToGoogleSheets(data.feeling, data.reason);
-                        syncedCount++;
-                    } catch (error) {
-                        console.error('Falló la sincronización:', error);
-                        break;
-                    }
-                }
-                
-                if (syncedCount > 0) {
-                    const remainingData = offlineData.slice(syncedCount);
-                    localStorage.setItem('feelingsPollOffline', JSON.stringify(remainingData));
-                    showNotification('¡Todos los datos offline se sincronizaron exitosamente!', 'success');
-                }
-            }
-        }
-        
-        // Crear una nube con el envío
-        function createCloud(feeling, reason) {
-            const container = document.getElementById('clouds-container');
-            const cloud = document.createElement('div');
-            cloud.className = 'cloud';
-            
-            // Gestionar cantidad de nubes
-            const clouds = container.querySelectorAll('.cloud');
-            if (clouds.length >= maxClouds) {
-                container.removeChild(clouds[0]);
-            }
-            
-            // Posición aleatoria
-            const maxLeft = container.offsetWidth - 300;
-            const maxTop = container.offsetHeight - 200;
-            cloud.style.left = `${Math.random() * maxLeft}px`;
-            cloud.style.top = `${Math.random() * maxTop}px`;
-            
-            // Retraso de animación aleatorio
-            cloud.style.animationDelay = `${Math.random() * 5}s`;
-            
-            // Fuente aleatoria
-            const randomFont = randomFonts[Math.floor(Math.random() * randomFonts.length)];
-            cloud.style.setProperty('--random-font', randomFont);
-            
-            // Almacenar datos de clic
-            cloud.clickCount = 0;
-            cloud.lastClickTime = 0;
-            
-            // Agregar event listener de clic
-            cloud.addEventListener('click', function(e) {
-                handleCloudClick(this, e);
-            });
-            
-            // Combinar feeling y reason
-            const combinedText = `<strong>Sentimiento:</strong> ${feeling}<br><strong>Por qué:</strong> ${reason}`;
-            cloud.innerHTML = `<div class="cloud-text">${combinedText}</div><div class="cloud-instruction">Clic para traer al frente • Triple clic para sorpresa</div>`;
-            
-            container.appendChild(cloud);
-        }
-        
-        // Manejar eventos de clic en nubes
-        function handleCloudClick(cloud, event) {
-            const currentTime = Date.now();
-            
-            // Traer nube al frente
-            bringToFront(cloud);
-            
-            // Verificar triple clic
-            if (currentTime - cloud.lastClickTime < 5000) {
-                cloud.clickCount++;
-                
-                if (cloud.clickCount === 3) {
-                    triggerHeartAnimation(cloud);
-                    cloud.clickCount = 0;
-                }
-            } else {
-                cloud.clickCount = 1;
-            }
-            
-            cloud.lastClickTime = currentTime;
-        }
-        
-        // Traer nube al frente
-        function bringToFront(cloud) {
-            const clouds = document.querySelectorAll('.cloud');
-            clouds.forEach(c => c.classList.remove('front'));
-            
-            cloud.classList.add('front');
-            cloudZIndex++;
-            cloud.style.zIndex = cloudZIndex;
-        }
-        
-        // Activar animación de corazón
-        function triggerHeartAnimation(cloud) {
-            cloud.classList.add('pop');
-            
-            const heart = document.createElement('div');
-            heart.className = 'heart';
-            cloud.appendChild(heart);
-            
-            setTimeout(() => {
-                heart.classList.add('animate');
-            }, 100);
-            
-            setTimeout(() => {
-                heart.remove();
-                cloud.classList.remove('pop');
-            }, 1500);
-            
-            showNotification('💖 ¡Encontraste el corazón secreto! 💖', 'success');
-        }
-        
-        // Mostrar notificación
-        function showNotification(message, type) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = 'notification show';
-            
-            if (type === 'error') {
-                notification.style.background = '#ff3366';
-                notification.style.color = '#fff';
-            } else if (type === 'info') {
-                notification.style.background = '#33ffcc';
-                notification.style.color = '#222';
-            } else {
-                notification.style.background = '#fff';
-                notification.style.color = '#222';
-            }
-            
-            setTimeout(() => {
-                notification.className = 'notification';
-            },3000);
-        }
-        
-        // Mostrar/ocultar indicador de carga
-        function showLoading(show) {
-            const loading = document.getElementById('loading');
-            if (show) {
-                loading.classList.add('show');
-            } else {
-                loading.classList.remove('show');
-            }
-        }
-        
-        // Cargar respuestas de ejemplo para demostración
-        function loadSampleResponses() {
-            sampleResponses.forEach((response, index) => {
-                setTimeout(() => {
-                    createCloud(response.feeling, response.reason);
-                }, index * 500);
-            });
-        }
-        
-        // Escuchar cambios de conexión
-        window.addEventListener('online', function() {
-            checkAndSyncOfflineData();
-        });
-        
-        window.addEventListener('offline', function() {
-            showNotification('Sin conexión. Los datos se guardarán localmente.', 'info');
-        });
-    </script>
-
-    <!-- Juego Nubes -->
-    <style>
-        /* Estilos específicos para el juego de nubes */
-        #cloud-game-section {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 30vh; /* Altura del área del juego */
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            z-index: 500; /* Asegurar que esté por encima del fondo pero por debajo de contenido importante */
-            overflow: hidden;
-            border-top: 2px dashed var(--secondary-color);
-        }
-        .game-cloud {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            cursor: pointer;
-            opacity: 0;
-            transform: scale(0);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            background: var(--cloud-color, white); /* Color por defecto */
-        }
-        .game-cloud-green {
-            background: var(--secondary-color);
-        }
-        .game-cloud-white {
-            background: white;
-        }
-        .game-cloud-fading {
-            opacity: 0 !important;
-            transform: scale(0) !important;
-        }
-    </style>
-
+    <!-- Sección del Juego -->
     <div id="cloud-game-section">
         <h2 style="position:absolute; top:10px; left:20px; z-index:5; color:white; font-size:1.2rem; opacity:0.8;">Relax: Pop the Clouds</h2>
     </div>
 
-    <script>
-        // Usamos una IIFE (Immediately Invoked Function Expression)
-        // Esto crea una "burbuja privada" para el código del juego.
-        // Las variables aquí (como 'createCloud') NO entrarán en conflicto con otros scripts en la página.
-        (function() {
-            const gameContainer = document.getElementById('cloud-game-section');
-            let greenCloudTimer;
-
-            function startGame() {
-                // Limpiar el contenedor del juego, excepto el título
-                const title = gameContainer.querySelector('h2');
-                gameContainer.innerHTML = ''; // Limpiar todo
-                if (title) {
-                    gameContainer.appendChild(title); // Re-agregar el título si existía
-                } else {
-                    gameContainer.innerHTML = '<h2 style="position:absolute; top:10px; left:20px; z-index:5; color:white; font-size:1.2rem; opacity:0.8;">Relax: Pop the Clouds</h2>';
-                }
-                
-                if (greenCloudTimer) clearTimeout(greenCloudTimer);
-                
-                createGameCloud(false, true); // Crear la primera nube blanca
-                scheduleNextGreenCloud();
-            }
-
-            function createGameCloud(isGreen = false, isWhite = false) {
-                const cloud = document.createElement('div');
-                cloud.className = 'game-cloud'; // Usar la nueva clase .game-cloud
-
-                if (isGreen) cloud.classList.add('game-cloud-green');
-                else if (isWhite) cloud.classList.add('game-cloud-white');
-                else {
-                    const hue = Math.floor(Math.random() * 360);
-                    cloud.style.setProperty('--cloud-color', `hsl(${hue}, 70%, 85%)`);
-                }
-
-                // Calcular posición basada en el tamaño del CONTENEDOR, no de la ventana
-                const containerRect = gameContainer.getBoundingClientRect();
-                const cloudSize = 120; // ancho aproximado
-
-                // Ajustar para que las nubes no se superpongan con el título
-                const titleHeight = 50; 
-                const randomTop = Math.random() * (containerRect.height - cloudSize - titleHeight) + titleHeight;
-                const randomLeft = Math.random() * (containerRect.width - cloudSize);
-
-                cloud.style.top = `${randomTop}px`;
-                cloud.style.left = `${randomLeft}px`;
-
-                cloud.addEventListener('pointerdown', onGameCloudClick);
-                gameContainer.appendChild(cloud);
-
-                // Forzar un reflow antes de aplicar la transición para que la animación inicial funcione
-                cloud.offsetHeight; 
-                cloud.style.opacity = '1';
-                cloud.style.transform = 'scale(1)';
-            }
-
-            function onGameCloudClick(e) {
-                const clickedCloud = e.currentTarget;
-                if (clickedCloud.classList.contains('game-cloud-fading')) return;
-
-                if (clickedCloud.classList.contains('game-cloud-green')) {
-                    resetGame();
-                } else {
-                    splitGameCloud(clickedCloud);
-                }
-            }
-
-            function splitGameCloud(cloud) {
-                cloud.classList.add('game-cloud-fading');
-                cloud.removeEventListener('pointerdown', onGameCloudClick);
-                
-                setTimeout(() => cloud.remove(), 400); // Esperar a que termine la transición de opacidad/escala
-                createGameCloud();
-                createGameCloud();
-            }
-
-            function resetGame() {
-                const allClouds = gameContainer.querySelectorAll('.game-cloud');
-                allClouds.forEach(cloud => {
-                    cloud.classList.add('game-cloud-fading');
-                    cloud.removeEventListener('pointerdown', onGameCloudClick);
-                    setTimeout(() => cloud.remove(), 400);
-                });
-                setTimeout(() => startGame(), 450);
-            }
-
-            function scheduleNextGreenCloud() {
-                const randomTime = Math.random() * 10000 + 5000; // Entre 5 y 15 segundos
-                greenCloudTimer = setTimeout(() => {
-                    if(document.body.contains(gameContainer)) { // Verificar si el juego todavía existe
-                        createGameCloud(true); // Crear una nube verde
-                        scheduleNextGreenCloud(); // Programar la siguiente
-                    }
-                }, randomTime);
-            }
-
-            // Iniciar el juego cuando se carga la página
-            startGame();
-
-        })(); // Fin del Ámbito Aislado
-    </script>
-
+    <!-- Scripts en orden de dependencia -->
+    <script src="js/config.js"></script>
+    <script src="js/moderator.js"></script>
+    <script src="js/cloudManager.js"></script>
+    <script src="js/formHandler.js"></script>
+    <script src="js/diagnosticTester.js"></script>
+    <script src="js/adminPanel.js"></script>
+    <script src="js/game/cloudGame.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
