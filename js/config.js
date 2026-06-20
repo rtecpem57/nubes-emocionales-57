@@ -1,71 +1,29 @@
-/**
- * Configuración centralizada de la aplicación
- * Incluye URLs, constantes y configuraciones globales
- */
+// js/config.js
 
-const APP_CONFIG = {
-    // Google Sheets Web App URL
-    GOOGLE_SHEETS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbzO7ghj0Kh5PkFT-pV4qMYNDDcmE6Ou8bgZBB_r_eN_dGAI1ggADdkQUT4mUyOWWCGK/exec',
-    
-    // Límites y constantes
-    MAX_CLOUDS: 8,
-    TEXT_MAX_LENGTH: 500,
-    
-    // Tiempo para triple clic (ms)
-    TRIPLE_CLICK_WINDOW: 5000,
-    
-    // Fuentes disponibles para nubes
-    AVAILABLE_FONTS: [
-        "'Permanent Marker', cursive",
-        "'Shadows Into Light', cursive",
-        "'Caveat', cursive",
-        "'Righteous', cursive",
-        "'Bungee', cursive",
-        "'Creepster', cursive",
-        "'Fredoka One', cursive"
-    ],
-    
-    // Datos de ejemplo para demostración
-    SAMPLE_RESPONSES: [
-        { feeling: "¡Hoy me siento feliz!", reason: "El sol está brillando y vi a mis amigos." },
-        { feeling: "Un poco estresado.", reason: "El trabajo ha sido muy exigente últimamente." },
-        { feeling: "¡Emocionado por el fin de semana!", reason: "Tengo planes para hacer senderismo y es mi actividad favorita." },
-        { feeling: "Sintiéndome agradecido", reason: "Mi familia me sorprendió con un regalo detallado." },
-        { feeling: "Un poco ansioso", reason: "Tengo una presentación importante mañana." }
-    ],
-    
-    // Configuración de moderación de contenido con Hugging Face
-    MODERATION: {
-        ENABLED: true,
-        HF_API_URL: 'https://api-inference.huggingface.co/models/martin-ha/toxic-comment-model',
-        HF_API_TOKEN: '', // Debe ser configurado por el administrador (gratuito en huggingface.co)
-        TOXICITY_THRESHOLD: 0.7, // Umbral de toxicidad (0-1)
-        SAVE_TO_SHEET_ALWAYS: true, // Siempre guardar en Google Sheets
-        DISPLAY_IF_FLAGGED: false // No mostrar en nubes si es tóxico
-    },
-    
-    // Configuración del administrador
-    ADMIN: {
-        SECRET_KEY_COMBO: ['Control', 'Shift', 'A'], // Combinación de teclas para abrir panel admin
-        SESSION_DURATION: 3600000, // 1 hora en ms
-        STORAGE_KEY: 'adminSession'
-    },
-    
-    // Mensajes personalizados para triple clic
-    TRIPLE_CLICK_MESSAGES: {
-        default: "💖 ¡Encontraste el corazón secreto! 💖",
-        custom: [] // Se puede personalizar desde el panel de administración
-    },
-    
-    // Claves de almacenamiento local
-    STORAGE_KEYS: {
-        OFFLINE_DATA: 'feelingsPollOffline',
-        FLAGGED_CONTENT: 'flaggedContent',
-        CUSTOM_MESSAGES: 'customTripleClickMessages'
-    }
+// Configuración tolerante a fallos para desarrollo/local
+export const config = {
+  // Hugging Face: Usa variable de entorno o cadena vacía si no existe
+  HF_API_KEY: import.meta.env.VITE_HF_API_KEY || '',
+  HF_MODEL: 'martin-ha/toxic-comment-model',
+  
+  // Google Sheets: ID de tu hoja de cálculo (Cámbialo por el tuyo real)
+  GOOGLE_SHEET_ID: '1BxiMvs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms', // Ejemplo
+  
+  // Supabase: Opcional. Si está vacío, el sistema usará solo Google Sheets
+  SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL || '',
+  SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+  
+  // Estado del modo backend
+  USE_BACKEND: false // Cambiar a true solo cuando tengas Supabase configurado
 };
 
-// Exportar para uso en otros módulos (si se usa ES6 modules)
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = APP_CONFIG;
+// Función de utilidad para verificar configuración
+export function checkConfig() {
+  if (!config.HF_API_KEY) {
+    console.warn('⚠️ AVISO: No se encontró VITE_HF_API_KEY. La moderación de contenido no funcionará hasta que la configures en Vercel/Netlify.');
+  }
+  if (!config.GOOGLE_SHEET_ID || config.GOOGLE_SHEET_ID === 'TU_ID_AQUI') {
+    console.warn('⚠️ AVISO: Configura tu GOOGLE_SHEET_ID en el código o variables de entorno.');
+  }
+  return true;
 }
