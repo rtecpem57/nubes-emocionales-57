@@ -4,6 +4,11 @@
  */
 
 import { config } from './config.js';
+import { ContentModerator } from './moderator.js';
+import { CloudManager } from './cloudManager.js';
+import { FormHandler } from './formHandler.js';
+import { DiagnosticTester } from './diagnosticTester.js';
+import { AdminPanel } from './adminPanel.js';
 
 (function() {
     'use strict';

@@ -206,7 +206,5 @@ class FormHandler {
     }
 }
 
-// Exportar para uso en otros módulos
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = FormHandler;
-}
+// Exportar para uso en otros módulos (ES6)
+export { FormHandler };

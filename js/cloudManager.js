@@ -213,7 +213,5 @@ class CloudManager {
     }
 }
 
-// Exportar para uso en otros módulos
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = CloudManager;
-}
+// Exportar para uso en otros módulos (ES6)
+export { CloudManager };

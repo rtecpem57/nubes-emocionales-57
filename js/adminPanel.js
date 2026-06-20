@@ -689,7 +689,5 @@ class AdminPanel {
     }
 }
 
-// Exportar para uso en otros módulos
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = AdminPanel;
-}
+// Exportar para uso en otros módulos (ES6)
+export { AdminPanel };

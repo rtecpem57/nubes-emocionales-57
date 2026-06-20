@@ -145,7 +145,5 @@ class ContentModerator {
     }
 }
 
-// Exportar para uso en otros módulos
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ContentModerator;
-}
+// Exportar para uso en otros módulos (ES6)
+export { ContentModerator };
