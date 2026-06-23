@@ -144,6 +144,3 @@ export class ContentModerator {
         localStorage.removeItem(storageKey);
     }
 }
-
-// Exportar para uso en otros módulos (ES6)
-export { ContentModerator };

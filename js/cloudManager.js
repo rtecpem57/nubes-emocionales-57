@@ -212,6 +212,3 @@ export class CloudManager {
         return this.customMessages;
     }
 }
-
-// Exportar para uso en otros módulos (ES6)
-export { CloudManager };

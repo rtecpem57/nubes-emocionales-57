@@ -205,6 +205,3 @@ class FormHandler {
         this.cloudManager?.showNotification(message, type);
     }
 }
-
-// Exportar para uso en otros módulos (ES6)
-export { FormHandler };

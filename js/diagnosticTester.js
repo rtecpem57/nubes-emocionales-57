@@ -354,6 +354,3 @@ class DiagnosticTester {
         return { success: false, message: 'Moderador no disponible' };
     }
 }
-
-// Exportar para uso en otros módulos (ES6)
-export { DiagnosticTester };

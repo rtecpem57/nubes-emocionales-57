@@ -688,6 +688,3 @@ class AdminPanel {
         alert('✓ Contraseña actualizada exitosamente');
     }
 }
-
-// Exportar para uso en otros módulos (ES6)
-export { AdminPanel };
