@@ -1,962 +1,1045 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nubes Emocionales</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='face'><stop offset='0%' stop-color='%2333ffcc'/><stop offset='100%' stop-color='%2322ccaa'/></radialGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23face)'/><circle cx='50' cy='50' r='35' fill='white'/><g fill='black'><path d='M30 35 Q35 45 40 35 Q35 40 30 35'/><path d='M60 35 Q65 45 70 35 Q65 40 60 35'/><path d='M25 60 Q50 75 75 60' stroke='black' stroke-width='3' fill='none'/><rect x='28' y='32' width='14' height='8' rx='2' fill='%23333'/><rect x='58' y='32' width='14' height='8' rx='2' fill='%23333'/></g></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='face'><stop offset='0%' stop-color='%2333ffcc'/><stop offset='100%' stop-color='%2322ccaa'/></radialGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23face)'/><circle cx='50' cy='50' r='35' fill='white'/><g fill='black'><path d='M30 35 Q35 45 40 35 Q35 40 30 35'/><path d='M60 35 Q65 45 70 35 Q65 40 60 35'/><path d='M25 60 Q50 75 75 60' stroke='black' stroke-width='3' fill='none'/><rect x='28' y='32' width='14' height='8' rx='2' fill='%23333'/><rect x='58' y='32' width='14' height='8' rx='2' fill='%23333'/></g></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik+Distressed&family=Permanent+Marker&family=Shadows+Into+Light&family=Caveat:wght@400;700&family=Righteous&family=Bungee&family=Creepster&family=Fredoka+One&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #ff3366;
-            --secondary-color: #33ffcc;
-            --tertiary-color: #ffcc33;
-            --dark-color: #222;
-            --light-color: #fff;
-            --heart-color: #ff69b4;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Fredoka One', cursive;
-            background: linear-gradient(135deg, #ff3366 0%, #33ffcc 50%, #ffcc33 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-        
-        /* Bobblehead */
-        .bobblehead-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 100px;
-            height: 150px;
-            z-index: 1000;
-            transition: all 0.5s ease;
-        }
-        
-        .bobblehead {
-            width: 80px;
-            height: 80px;
-            background: var(--secondary-color);
-            border-radius: 50%;
-            position: relative;
-            animation: bobble 2s infinite ease-in-out;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .bobblehead::before {
-            content: "";
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: var(--light-color);
-            border-radius: 50%;
-            top: 10px;
-            left: 10px;
-        }
-        
-        .bobblehead::after {
-            content: "😎";
-            position: absolute;
-            font-size: 40px;
-            top: 20px;
-            left: 20px;
-        }
-        
-        .bobblehead-body {
-            width: 60px;
-            height: 70px;
-            background: var(--primary-color);
-            border-radius: 30px 30px 0 0;
-            position: absolute;
-            bottom: 0;
-            left: 10px;
-        }
-        
-        @keyframes bobble {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(5deg); }
-            75% { transform: rotate(-5deg); }
-        }
-        
-        /* Header */
-        header {
-            text-align: center;
-            padding: 30px 20px;
-            position: relative;
-        }
-        
-        h1 {
-            font-family: 'Rubik Distressed', cursive;
-            font-size: 4rem;
-            color: var(--light-color);
-            text-shadow: 3px 3px 0 var(--dark-color);
-            transform: rotate(-3deg);
-            margin-bottom: 10px;
-            animation: pulse 2s infinite;
-        }
-        
-        .subtitle {
-            font-family: 'Caveat', cursive;
-            font-size: 1.5rem;
-            color: var(--light-color);
-            margin-bottom: 20px;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: rotate(-3deg) scale(1); }
-            50% { transform: rotate(-3deg) scale(1.05); }
-        }
-        
-        /* Form Container */
-        .form-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 1200px;
-        }
-        
-        /* Input Module */
-        .input-module {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            padding: 25px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transform: rotate(random(-5, 5)deg);
-            position: relative;
-            transition: transform 0.3s ease;
-        }
-        
-        .input-module:nth-child(1) {
-            transform: rotate(-3deg);
-            background: rgba(255, 255, 255, 0.9);
-            border: 4px dashed var(--primary-color);
-        }
-        
-        .input-module:nth-child(2) {
-            transform: rotate(2deg);
-            background: rgba(255, 255, 255, 0.9);
-            border: 4px dashed var(--secondary-color);
-        }
-        
-        .input-module:hover {
-            transform: scale(1.03) rotate(0deg);
-            z-index: 10;
-        }
-        
-        .input-module h2 {
-            font-family: 'Bungee', cursive;
-            color: var(--dark-color);
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-        }
-        
-        .input-module .instruction {
-            font-family: 'Caveat', cursive;
-            color: var(--dark-color);
-            font-size: 1rem;
-            margin-bottom: 10px;
-            opacity: 0.8;
-        }
-        
-        .input-module textarea {
-            width: 100%;
-            min-height: 120px;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-family: 'Caveat', cursive;
-            font-size: 1.2rem;
-            resize: vertical;
-            background: rgba(255, 255, 255, 0.7);
-            transition: background 0.3s ease;
-        }
-        
-        .input-module textarea:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 0 0 3px var(--tertiary-color);
-        }
-        
-        /* Submit Button */
-        .submit-container {
-            text-align: center;
-            margin: 30px 0;
-        }
-        
-        .submit-btn {
-            background: var(--tertiary-color);
-            color: var(--dark-color);
-            border: none;
-            padding: 15px 40px;
-            font-family: 'Righteous', cursive;
-            font-size: 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .submit-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-        
-        .submit-btn:active {
-            transform: scale(0.98);
-        }
-        
-        /* What We've Heard Section */
-        .heard-section {
-            padding: 50px 20px;
-            margin-top: 50px;
-            position: relative;
-        }
-        
-        .heard-title {
-            font-family: 'Creepster', cursive;
-            font-size: 3rem;
-            text-align: center;
-            color: var(--light-color);
-            text-shadow: 2px 2px 0 var(--dark-color);
-            margin-bottom: 40px;
-        }
-        
-        .clouds-container {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            min-height: 500px;
-        }
-        
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 50%;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            max-width: 300px;
-            transition: all 0.5s ease;
-            animation: float 10s infinite ease-in-out;
-            cursor: pointer;
-            z-index: 1;
-        }
-        
-        .cloud:hover {
-            transform: scale(1.05);
-            z-index: 100;
-        }
-        
-        .cloud.front {
-            z-index: 1000;
-        }
-        
-        .cloud::before {
-            content: "";
-            position: absolute;
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-            top: -40px;
-            left: 30px;
-        }
-        
-        .cloud::after {
-            content: "";
-            position: absolute;
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            top: -20px;
-            right: 30px;
-        }
-        
-        .cloud-text {
-            position: relative;
-            z-index: 1;
-            padding: 10px;
-            font-family: var(--random-font);
-            font-size: 1.2rem;
-            color: var(--dark-color);
-        }
-        
-        .cloud-instruction {
-            position: absolute;
-            bottom: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-family: 'Caveat', cursive;
-            font-size: 0.9rem;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .cloud:hover .cloud-instruction {
-            opacity: 1;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        /* Heart Animation */
-        .heart {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .heart::before,
-        .heart::after {
-            content: '';
-            position: absolute;
-            width: 26px;
-            height: 40px;
-            background: var(--heart-color);
-            border-radius: 26px 26px 0 0;
-            transform: rotate(-45deg);
-            transform-origin: 0 100%;
-            left: 50px;
-            top: 0;
-        }
-        
-        .heart::after {
-            left: 0;
-            transform: rotate(45deg);
-            transform-origin: 100% 100%;
-        }
-        
-        .heart.animate {
-            animation: heartPop 1.5s ease-in-out;
-        }
-        
-        @keyframes heartPop {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0);
-            }
-            50% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.5);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0);
-            }
-        }
-        
-        /* Cloud Pop Animation */
-        .cloud.pop {
-            animation: cloudPop 0.5s ease-in-out;
-        }
-        
-        @keyframes cloudPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.8); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--light-color);
-            padding: 15px 30px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            font-family: 'Righteous', cursive;
-            font-size: 1.2rem;
-            transition: top 0.5s ease;
-            z-index: 2000;
-        }
-        
-        .notification.show {
-            top: 30px;
-        }
-        
-        /* Loading indicator */
-        .loading {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 3000;
-        }
-        
-        .loading.show {
-            display: block;
-        }
-        
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            border-top: 5px solid var(--light-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .form-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .input-module {
-                max-width: 90%;
-            }
-            
-            .cloud {
-                max-width: 250px;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nubes Emocionales</title>
+
+  <!-- Favicon inline SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☁️</text></svg>">
+
+  <!-- Tipografías -->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Distressed&family=Caveat:wght@400;700&family=Righteous&family=Fredoka+One&family=Permanent+Marker&family=Shadows+Into+Light&family=Bungee&family=Creepster&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ══════════════════════════════════════
+       TOKENS
+    ══════════════════════════════════════ */
+    :root {
+      --rosa:    #ff3366;
+      --menta:   #33ffcc;
+      --sol:     #ffcc33;
+      --oscuro:  #222;
+      --blanco:  #fff;
+      --corazon: #ff69b4;
+      --radio:   20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Fredoka One', cursive;
+      background: linear-gradient(135deg, var(--rosa) 0%, var(--menta) 50%, var(--sol) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ══════════════════════════════════════
+       PANEL DE MÓDULOS
+    ══════════════════════════════════════ */
+    #panel-modulos {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 2000;
+      background: rgba(255,255,255,0.92);
+      border-radius: var(--radio);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+      padding: 0.9rem 1.1rem;
+      min-width: 190px;
+      backdrop-filter: blur(8px);
+      border: 2px dashed var(--rosa);
+    }
+    #panel-modulos h3 {
+      font-family: 'Bungee', cursive;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--oscuro);
+      opacity: 0.5;
+      margin-bottom: 0.7rem;
+    }
+    .mod-fila {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.45rem;
+      font-size: 0.88rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .mod-fila input[type="checkbox"] {
+      width: 15px; height: 15px;
+      accent-color: var(--rosa);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .mod-badge {
+      margin-left: auto;
+      font-size: 0.65rem;
+      font-family: 'Righteous', cursive;
+      padding: 1px 6px;
+      border-radius: 20px;
+    }
+    .mod-badge.on  { background: #c8f5c8; color: #1b5e20; }
+    .mod-badge.off { background: #ffd0d0; color: #b71c1c; }
+
+    /* ══════════════════════════════════════
+       ENCABEZADO
+    ══════════════════════════════════════ */
+    header {
+      text-align: center;
+      padding: 2.5rem 1rem 1rem;
+    }
+    header h1 {
+      font-family: 'Rubik Distressed', cursive;
+      font-size: clamp(2.2rem, 7vw, 4rem);
+      color: var(--blanco);
+      text-shadow: 3px 3px 0 var(--oscuro);
+      transform: rotate(-2deg);
+      display: inline-block;
+      animation: pulso 2.5s ease-in-out infinite;
+    }
+    @keyframes pulso {
+      0%,100% { transform: rotate(-2deg) scale(1); }
+      50%      { transform: rotate(-2deg) scale(1.04); }
+    }
+    header p {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--blanco);
+      margin-top: 0.5rem;
+      opacity: 0.9;
+    }
+
+    /* ══════════════════════════════════════
+       FORMULARIO
+    ══════════════════════════════════════ */
+    #seccion-formulario {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .modulo-input {
+      background: rgba(255,255,255,0.92);
+      border-radius: var(--radio);
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+      transition: transform 0.25s ease;
+    }
+    .modulo-input:nth-child(1) { transform: rotate(-2deg); border: 3px dashed var(--rosa); }
+    .modulo-input:nth-child(2) { transform: rotate(1.5deg); border: 3px dashed var(--menta); }
+    .modulo-input:hover        { transform: scale(1.02) rotate(0deg); z-index: 10; }
+
+    .modulo-input h2 {
+      font-family: 'Bungee', cursive;
+      color: var(--oscuro);
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .modulo-input .instruccion {
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      opacity: 0.7;
+      margin-bottom: 0.6rem;
+    }
+    .modulo-input textarea {
+      width: 100%;
+      min-height: 110px;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Caveat', cursive;
+      font-size: 1.15rem;
+      resize: vertical;
+      background: rgba(255,255,255,0.6);
+      color: var(--oscuro);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .modulo-input textarea:focus {
+      outline: none;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 0 0 3px var(--sol);
+    }
+
+    /* Botón enviar */
+    #contenedor-enviar { text-align: center; margin: 1.5rem 0; }
+    #btn-enviar {
+      background: var(--sol);
+      color: var(--oscuro);
+      border: none;
+      padding: 0.9rem 2.5rem;
+      font-family: 'Righteous', cursive;
+      font-size: 1.3rem;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    #btn-enviar:hover  { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+    #btn-enviar:active { transform: scale(0.97); }
+    #btn-enviar:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ══════════════════════════════════════
+       SECCIÓN NUBES EMOCIONALES
+    ══════════════════════════════════════ */
+    #seccion-nubes {
+      padding: 3rem 1rem 2rem;
+    }
+    #seccion-nubes h2 {
+      font-family: 'Creepster', cursive;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      text-align: center;
+      color: var(--blanco);
+      text-shadow: 2px 2px 0 var(--oscuro);
+      margin-bottom: 0.5rem;
+    }
+    #seccion-nubes .pista {
+      text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      color: var(--blanco);
+      opacity: 0.85;
+      margin-bottom: 2rem;
+    }
+    #contenedor-nubes {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      min-height: 420px;
+    }
+    .nube {
+      position: absolute;
+      background: rgba(255,255,255,0.88);
+      border-radius: 50px;
+      padding: 1.2rem 1.5rem;
+      max-width: 280px;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.12);
+      cursor: pointer;
+      animation: flotar 8s ease-in-out infinite;
+      transition: transform 0.3s ease, z-index 0s;
+      z-index: 1;
+    }
+    .nube:hover { transform: scale(1.06); z-index: 100; }
+    .nube::before {
+      content: '';
+      position: absolute;
+      background: rgba(255,255,255,0.88);
+      border-radius: 50%;
+      width: 90px; height: 90px;
+      top: -35px; left: 25px;
+    }
+    .nube::after {
+      content: '';
+      position: absolute;
+      background: rgba(255,255,255,0.88);
+      border-radius: 50%;
+      width: 70px; height: 70px;
+      top: -18px; right: 25px;
+    }
+    .nube-texto {
+      position: relative;
+      z-index: 1;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--oscuro);
+    }
+    .nube-pista {
+      position: absolute;
+      bottom: -28px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-family: 'Caveat', cursive;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .nube:hover .nube-pista { opacity: 1; }
+    @keyframes flotar {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-16px); }
+    }
+
+    /* Corazón (easter egg) */
+    .corazon {
+      position: absolute;
+      width: 60px; height: 60px;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      opacity: 0;
+      pointer-events: none;
+      font-size: 2.5rem;
+      text-align: center;
+      line-height: 60px;
+    }
+    .corazon.animar {
+      animation: corazonPop 1.4s ease-in-out forwards;
+    }
+    @keyframes corazonPop {
+      0%   { opacity:0; transform: translate(-50%,-50%) scale(0); }
+      50%  { opacity:1; transform: translate(-50%,-50%) scale(1.6); }
+      100% { opacity:0; transform: translate(-50%,-50%) scale(0); }
+    }
+    .nube.pop { animation: cloudPop 0.4s ease-in-out; }
+    @keyframes cloudPop {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(0.85); opacity: 0.6; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ══════════════════════════════════════
+       JUEGO DE NUBES
+    ══════════════════════════════════════ */
+    #seccion-juego {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%;
+      height: 28vh;
+      background: linear-gradient(to top, rgba(0,0,0,0.65), transparent);
+      z-index: 500;
+      overflow: hidden;
+      border-top: 2px dashed var(--menta);
+    }
+    #seccion-juego .juego-titulo {
+      position: absolute;
+      top: 8px; left: 16px;
+      color: white;
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      opacity: 0.8;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .nube-juego {
+      position: absolute;
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      cursor: pointer;
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .nube-juego.visible   { opacity: 1; transform: scale(1); }
+    .nube-juego.saliendo  { opacity: 0 !important; transform: scale(0) !important; }
+    .nube-juego-verde     { background: var(--menta); }
+    .nube-juego-blanca    { background: white; }
+
+    /* ══════════════════════════════════════
+       ONEKO
+    ══════════════════════════════════════ */
+    #oneko {
+      width: 32px; height: 32px;
+      position: fixed;
+      pointer-events: none;
+      image-rendering: pixelated;
+      background-image: url('https://adryd.com/static/neko/neko.gif');
+      z-index: 9999;
+    }
+
+    /* ══════════════════════════════════════
+       NOTIFICACIÓN
+    ══════════════════════════════════════ */
+    #notificacion {
+      position: fixed;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--blanco);
+      color: var(--oscuro);
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.2);
+      font-family: 'Righteous', cursive;
+      font-size: 1rem;
+      transition: top 0.4s ease;
+      z-index: 3000;
+      white-space: nowrap;
+    }
+    #notificacion.visible { top: 1.2rem; }
+
+    /* Spinner */
+    #spinner {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 4000;
+      width: 48px; height: 48px;
+      border: 5px solid rgba(255,255,255,0.3);
+      border-top: 5px solid white;
+      border-radius: 50%;
+      animation: girar 0.9s linear infinite;
+    }
+    #spinner.visible { display: block; }
+    @keyframes girar { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+    /* ══════════════════════════════════════
+       PIE
+    ══════════════════════════════════════ */
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem 30vh;
+      font-family: 'Caveat', cursive;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+    }
+    footer a { color: inherit; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 600px) {
+      #panel-modulos { min-width: 160px; font-size: 0.8rem; }
+      .modulo-input  { max-width: 95%; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Nubes Emocionales</h1>
-        <p class="subtitle">Compartí cómo te sentís y por qué, en total anonimato</p>
-    </header>
-    
-    <main>
-        <section class="form-container">
-            <div class="input-module" id="feeling-module">
-                <h2>¿Cómo te sentís hoy?</h2>
-                <p class="instruction">Describí tu estado emocional actual en pocas palabras</p>
-                <textarea id="feeling-input" placeholder="Ej: Feliz, Ansioso, Emocionado, Cansado..." maxlength="500"></textarea>
-            </div>
-            
-            <div class="input-module" id="reason-module">
-                <h2>¿Qué te hace sentir así?</h2>
-                <p class="instruction">Contanos qué hay detrás de tus sentimientos (opcional pero lo valoramos)</p>
-                <textarea id="reason-input" placeholder="Ej: Porque terminé un proyecto, tengo examen mañana..." maxlength="500"></textarea>
-            </div>
-        </section>
-        
-        <div class="submit-container">
-            <button class="submit-btn" id="submit-btn">Compartir Mis Sentimientos</button>
-        </div>
-        
-        <section class="heard-section">
-            <h2 class="heard-title">¡Lo que escuchamos!</h2>
-            <p style="text-align: center; color: white; margin-bottom: 20px; font-family: 'Caveat', cursive; font-size: 1.2rem;">
-                Hacé clic en las nubes para traerlas al frente • ¡Triple clic para una sorpresa!
-            </p>
-            <div class="clouds-container" id="clouds-container">
-                <!-- Las nubes se agregarán dinámicamente aquí -->
-            </div>
-        </section>
-    </main>
-    
-    <div class="bobblehead-container" id="bobblehead">
-        <div class="bobblehead"></div>
-        <div class="bobblehead-body"></div>
+
+  <!-- ─── PANEL DE MÓDULOS ─── -->
+  <div id="panel-modulos">
+    <h3>Módulos ⚙️</h3>
+    <!-- generado por JS -->
+  </div>
+
+  <!-- ─── ENCABEZADO ─── -->
+  <header>
+    <h1>Nubes Emocionales</h1>
+    <p>Compartí cómo te sentís, en total anonimato</p>
+  </header>
+
+  <!-- ─── FORMULARIO ─── -->
+  <section id="seccion-formulario">
+    <div class="modulo-input">
+      <h2>¿Cómo te sentís hoy?</h2>
+      <p class="instruccion">Describí tu estado emocional en pocas palabras</p>
+      <textarea id="input-sentimiento" placeholder="Ej: Feliz, Ansioso, Emocionado, Cansado…" maxlength="300"></textarea>
     </div>
-    
-    <div class="notification" id="notification">¡Gracias por compartir!</div>
-    
-    <div class="loading" id="loading">
-        <div class="loading-spinner"></div>
+    <div class="modulo-input">
+      <h2>¿Qué te hace sentir así?</h2>
+      <p class="instruccion">Contanos qué hay detrás (opcional pero lo valoramos)</p>
+      <textarea id="input-razon" placeholder="Ej: Terminé un proyecto, tengo examen mañana…" maxlength="300"></textarea>
     </div>
-    
-    <script>
-        // Configuración de Google Sheets - URL de Web App de Apps Script
-        const GOOGLE_SHEETS_CONFIG = {
-            webAppUrl: 'https://script.google.com/macros/s/AKfycbzO7ghj0Kh5PkFT-pV4qMYNDDcmE6Ou8bgZBB_r_eN_dGAI1ggADdkQUT4mUyOWWCGK/exec'
+  </section>
+
+  <div id="contenedor-enviar">
+    <button id="btn-enviar" type="button">Compartir mis sentimientos ☁️</button>
+  </div>
+
+  <!-- ─── NUBES EMOCIONALES ─── -->
+  <section id="seccion-nubes">
+    <h2>¡Lo que escuchamos!</h2>
+    <p class="pista">Hacé clic en las nubes para traerlas al frente · ¡Triple clic para una sorpresa! 💖</p>
+    <div id="contenedor-nubes"></div>
+  </section>
+
+  <!-- ─── JUEGO ─── -->
+  <div id="seccion-juego">
+    <p class="juego-titulo">Relax: Explotá las nubes ☁️ · La verde reinicia</p>
+  </div>
+
+  <!-- ─── PIE ─── -->
+  <footer>
+    Proyecto educativo · Andes Unlimit 2020 ·
+    <a href="https://github.com/andesunlimited2020-ops/nubes-emocionales" target="_blank" rel="noopener">GitHub</a><br/>
+    Mascota: <a href="https://github.com/adryd325/oneko.js" target="_blank" rel="noopener">oneko.js</a> (MIT) ·
+    arte de <a href="https://twitter.com/_Anunnery" target="_blank" rel="noopener">@_Anunnery</a> ·
+    sprite de <a href="https://adryd.com" target="_blank" rel="noopener">adryd.com</a>
+  </footer>
+
+  <!-- ─── UI helpers ─── -->
+  <div id="notificacion"></div>
+  <div id="spinner"></div>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       SISTEMA DE MÓDULOS
+       ════════════════════════════════════════════════════════
+       Cada módulo tiene: { nombre, etiqueta, activo, init(), destroy() }
+       Para agregar uno nuevo: copiá el bloque y pegalo en el array MODULOS.
+       El panel de control se genera solo.
+  ════════════════════════════════════════════════════════════ -->
+  <script>
+
+  /* ──────────────────────────────
+     UTILIDADES GLOBALES
+  ────────────────────────────── */
+
+  // Escapa texto para inserción segura en HTML (previene XSS)
+  function escapar(str) {
+    const d = document.createElement('div');
+    d.appendChild(document.createTextNode(String(str)));
+    return d.innerHTML;
+  }
+
+  // localStorage seguro
+  function leerLS(clave, def) {
+    try { const v = localStorage.getItem(clave); return v ? JSON.parse(v) : def; }
+    catch(e) { return def; }
+  }
+  function guardarLS(clave, val) {
+    try { localStorage.setItem(clave, JSON.stringify(val)); } catch(e) {}
+  }
+
+  // Notificación flotante
+  function notif(msg, tipo) {
+    const n = document.getElementById('notificacion');
+    n.textContent = msg;
+    n.style.background = tipo === 'error' ? '#ff3366'
+                       : tipo === 'info'  ? '#33ffcc'
+                       : '#fff';
+    n.style.color = (tipo === 'error' || tipo === 'success') && tipo !== 'info' ? '#fff' : '#222';
+    n.classList.add('visible');
+    clearTimeout(n._t);
+    n._t = setTimeout(() => n.classList.remove('visible'), 3200);
+  }
+
+  function spinner(show) {
+    document.getElementById('spinner').classList.toggle('visible', show);
+  }
+
+  /* ──────────────────────────────
+     URL DEL APPS SCRIPT
+     (cambiar acá si la URL cambia)
+  ────────────────────────────── */
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzO7ghj0Kh5PkFT-pV4qMYNDDcmE6Ou8bgZBB_r_eN_dGAI1ggADdkQUT4mUyOWWCGK/exec';
+
+  /* ──────────────────────────────
+     FUENTES ALEATORIAS PARA NUBES
+  ────────────────────────────── */
+  const FUENTES = [
+    "'Permanent Marker', cursive",
+    "'Shadows Into Light', cursive",
+    "'Caveat', cursive",
+    "'Righteous', cursive",
+    "'Fredoka One', cursive",
+  ];
+
+  /* ──────────────────────────────
+     DATOS DE EJEMPLO
+  ────────────────────────────── */
+  const EJEMPLOS = [
+    { sentimiento: '¡Hoy me siento feliz!',      razon: 'El sol está brillando y vi a mis amigos.' },
+    { sentimiento: 'Un poco estresado.',          razon: 'El trabajo ha sido muy exigente.' },
+    { sentimiento: '¡Emocionado por el finde!',  razon: 'Tenemos salida de campamento.' },
+    { sentimiento: 'Sintiéndome agradecido.',     razon: 'Mi familia me sorprendió con un regalo.' },
+    { sentimiento: 'Un poco ansioso.',            razon: 'Tengo presentación importante mañana.' },
+  ];
+
+
+  /* ══════════════════════════════
+     DEFINICIÓN DE MÓDULOS
+  ══════════════════════════════ */
+
+  const MODULOS = [
+
+    /* ────────────────────────────────────────────
+       MÓDULO: FORMULARIO
+       Permite a los estudiantes contar cómo se
+       sienten y enviar el dato a Google Sheets.
+    ──────────────────────────────────────────── */
+    {
+      nombre: 'formulario',
+      etiqueta: '📝 Formulario',
+      activo: true,
+
+      init() {
+        document.getElementById('seccion-formulario').style.display = 'flex';
+        document.getElementById('contenedor-enviar').style.display  = 'block';
+        // Clonar botón para limpiar listeners previos
+        const viejo = document.getElementById('btn-enviar');
+        const nuevo = viejo.cloneNode(true);
+        viejo.replaceWith(nuevo);
+        nuevo.addEventListener('click', () => this._enviar());
+      },
+
+      destroy() {
+        document.getElementById('seccion-formulario').style.display = 'none';
+        document.getElementById('contenedor-enviar').style.display  = 'none';
+      },
+
+      async _enviar() {
+        const sentimiento = document.getElementById('input-sentimiento').value.trim().slice(0, 300);
+        const razon       = document.getElementById('input-razon').value.trim().slice(0, 300);
+
+        if (!sentimiento) { notif('¡Contanos cómo te sentís!', 'error'); return; }
+
+        const btn = document.getElementById('btn-enviar');
+        btn.disabled = true;
+        spinner(true);
+
+        // Guardar offline como respaldo inmediato
+        const pendientes = leerLS('pendientes', []);
+        pendientes.push({ sentimiento, razon, ts: Date.now() });
+        guardarLS('pendientes', pendientes);
+
+        try {
+          const fd = new FormData();
+          fd.append('feeling',   sentimiento);
+          fd.append('reason',    razon);
+          fd.append('timestamp', new Date().toISOString());
+          await fetch(APPS_SCRIPT_URL, { method: 'POST', body: fd });
+          notif('¡Gracias por compartir! Tus sentimientos volaron ☁️', 'success');
+        } catch(e) {
+          notif('Sin conexión — guardado para sincronizar más tarde.', 'info');
+        } finally {
+          btn.disabled = false;
+          spinner(false);
+        }
+
+        // Crear nube visual si ese módulo está activo
+        const modNubes = MODULOS.find(m => m.nombre === 'nubes');
+        if (modNubes?.activo) modNubes.crearNube(sentimiento, razon);
+
+        document.getElementById('input-sentimiento').value = '';
+        document.getElementById('input-razon').value       = '';
+      },
+    },
+
+
+    /* ────────────────────────────────────────────
+       MÓDULO: NUBES FLOTANTES
+       Muestra tarjetas flotantes con los
+       sentimientos. Triple clic = corazón secreto.
+    ──────────────────────────────────────────── */
+    {
+      nombre: 'nubes',
+      etiqueta: '☁️ Nubes flotantes',
+      activo: true,
+      _zIndex: 1,
+
+      init() {
+        document.getElementById('seccion-nubes').style.display = 'block';
+        // Cargar ejemplos de forma escalonada
+        EJEMPLOS.forEach((ej, i) =>
+          setTimeout(() => this.crearNube(ej.sentimiento, ej.razon), i * 400)
+        );
+      },
+
+      destroy() {
+        const s = document.getElementById('seccion-nubes');
+        s.style.display = 'none';
+        document.getElementById('contenedor-nubes').innerHTML = '';
+      },
+
+      crearNube(sentimiento, razon) {
+        const cont = document.getElementById('contenedor-nubes');
+        if (!cont || cont.style.display === 'none') return;
+
+        // Máximo 10 nubes visibles
+        const nubes = cont.querySelectorAll('.nube');
+        if (nubes.length >= 10) nubes[0].remove();
+
+        const nube = document.createElement('div');
+        nube.className = 'nube';
+
+        // Contenido seguro — sin innerHTML con datos de usuario
+        const texto = document.createElement('div');
+        texto.className = 'nube-texto';
+        texto.style.fontFamily = FUENTES[Math.floor(Math.random() * FUENTES.length)];
+
+        const fs = document.createElement('strong');
+        fs.textContent = sentimiento;
+        texto.appendChild(fs);
+
+        if (razon) {
+          const br = document.createElement('br');
+          const rz = document.createTextNode(razon);
+          texto.appendChild(br);
+          texto.appendChild(rz);
+        }
+
+        const pista = document.createElement('div');
+        pista.className = 'nube-pista';
+        pista.textContent = 'Clic = al frente · Triple clic para sorpresa 💖';
+
+        nube.appendChild(texto);
+        nube.appendChild(pista);
+
+        // Posición aleatoria
+        const maxL = Math.max(0, cont.offsetWidth  - 300);
+        const maxT = Math.max(0, cont.offsetHeight - 180);
+        nube.style.left            = Math.floor(Math.random() * (maxL || 200)) + 'px';
+        nube.style.top             = Math.floor(Math.random() * (maxT || 100) + 20) + 'px';
+        nube.style.animationDelay  = (Math.random() * 4) + 's';
+        nube.style.animationDuration = (6 + Math.random() * 4) + 's';
+
+        // Lógica de clics
+        let clics = 0, ultimoClic = 0;
+        nube.addEventListener('click', () => {
+          const ahora = Date.now();
+          // Traer al frente
+          this._zIndex++;
+          nube.style.zIndex = this._zIndex;
+
+          if (ahora - ultimoClic < 4500) {
+            clics++;
+            if (clics >= 3) {
+              this._corazon(nube);
+              clics = 0;
+            }
+          } else {
+            clics = 1;
+          }
+          ultimoClic = ahora;
+        });
+
+        cont.appendChild(nube);
+      },
+
+      _corazon(nube) {
+        nube.classList.add('pop');
+        const c = document.createElement('div');
+        c.className = 'corazon';
+        c.textContent = '💖';
+        nube.appendChild(c);
+        requestAnimationFrame(() => c.classList.add('animar'));
+        setTimeout(() => { c.remove(); nube.classList.remove('pop'); }, 1500);
+        notif('💖 ¡Encontraste el corazón secreto! 💖', 'success');
+      },
+    },
+
+
+    /* ────────────────────────────────────────────
+       MÓDULO: JUEGO DE NUBES
+       Nubes que se dividen al hacer clic.
+       La nube verde reinicia el juego.
+       Código adaptado del proyecto original.
+    ──────────────────────────────────────────── */
+    {
+      nombre: 'juego',
+      etiqueta: '🎮 Juego de nubes',
+      activo: true,
+      _timer: null,
+
+      init() {
+        const sec = document.getElementById('seccion-juego');
+        sec.style.display = 'block';
+        this._iniciar();
+      },
+
+      destroy() {
+        clearTimeout(this._timer);
+        this._timer = null;
+        const sec = document.getElementById('seccion-juego');
+        sec.style.display = 'none';
+        sec.querySelectorAll('.nube-juego').forEach(n => n.remove());
+      },
+
+      _iniciar() {
+        const sec = document.getElementById('seccion-juego');
+        sec.querySelectorAll('.nube-juego').forEach(n => n.remove());
+        clearTimeout(this._timer);
+        this._crearNube(false, true); // primera nube blanca
+        this._programarVerde();
+      },
+
+      _crearNube(verde = false, blanca = false) {
+        const sec  = document.getElementById('seccion-juego');
+        if (!sec || sec.style.display === 'none') return;
+        const rect = sec.getBoundingClientRect();
+
+        const n   = document.createElement('div');
+        n.className = 'nube-juego';
+        if (verde)  n.classList.add('nube-juego-verde');
+        else if (blanca) n.classList.add('nube-juego-blanca');
+        else {
+          const h = Math.floor(Math.random() * 360);
+          n.style.background = `hsl(${h},60%,85%)`;
+        }
+
+        const tam  = 110;
+        const marT = 40; // espacio bajo el título
+        n.style.top  = (Math.random() * (rect.height - tam - marT) + marT) + 'px';
+        n.style.left = (Math.random() * (rect.width  - tam))              + 'px';
+
+        n.addEventListener('pointerdown', (e) => {
+          e.stopPropagation();
+          if (n.classList.contains('saliendo')) return;
+          if (verde) { this._reiniciar(); }
+          else       { this._dividir(n); }
+        });
+
+        sec.appendChild(n);
+        // Forzar reflow para activar transición CSS
+        n.offsetHeight;
+        n.classList.add('visible');
+      },
+
+      _dividir(nube) {
+        nube.classList.add('saliendo');
+        nube.removeEventListener('pointerdown', () => {});
+        setTimeout(() => nube.remove(), 450);
+        this._crearNube();
+        this._crearNube();
+      },
+
+      _reiniciar() {
+        const sec = document.getElementById('seccion-juego');
+        sec.querySelectorAll('.nube-juego').forEach(n => {
+          n.classList.add('saliendo');
+          setTimeout(() => n.remove(), 450);
+        });
+        clearTimeout(this._timer);
+        setTimeout(() => this._iniciar(), 500);
+      },
+
+      _programarVerde() {
+        const delay = 5000 + Math.random() * 10000;
+        this._timer = setTimeout(() => {
+          if (document.getElementById('seccion-juego')?.style.display !== 'none') {
+            this._crearNube(true);
+            this._programarVerde();
+          }
+        }, delay);
+      },
+    },
+
+
+    /* ────────────────────────────────────────────
+       MÓDULO: MASCOTA MAIA (oneko)
+       Gato animado que sigue al cursor.
+
+       Créditos:
+       · oneko.js por adryd325 — github.com/adryd325/oneko.js (MIT)
+       · Arte original: @_Anunnery (twitter.com/_Anunnery)
+       · Sprite: adryd.com/static/neko/neko.gif
+    ──────────────────────────────────────────── */
+    {
+      nombre: 'oneko',
+      etiqueta: '🐱 Mascota Maia',
+      activo: true,
+
+      init() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        this._lanzar();
+      },
+
+      destroy() {
+        clearInterval(window._onekoInterval);
+        window._onekoInterval = null;
+        document.getElementById('oneko')?.remove();
+        if (window._onekoToggleMouse) {
+          document.removeEventListener('mousedown', window._onekoToggleMouse);
+          document.removeEventListener('mouseup',   window._onekoToggleMouse);
+        }
+        document.onmousemove = null;
+      },
+
+      _lanzar() {
+        // ── Basado en oneko.js (MIT) — github.com/adryd325/oneko.js ──
+        const el = document.createElement('div');
+        el.id = 'oneko';
+        document.body.appendChild(el);
+
+        let px = Math.random() * (window.innerWidth  - 64) + 32;
+        let py = Math.random() * (window.innerHeight - 64) + 32;
+        let mx = px - 32, my = py - 32;
+        let mouseDown = false;
+        let frames = 0, idle = 0, idleAnim = null, idleFrame = 0;
+        const VEL = 10;
+
+        const S = {
+          idle:[[−3,−3]],alert:[[−7,−3]],
+          scratchSelf:[[−5,0],[−6,0],[−7,0]],
+          scratchWallN:[[0,0],[0,−1]],scratchWallS:[[−7,−1],[−6,−2]],
+          scratchWallE:[[−2,−2],[−2,−3]],scratchWallW:[[−4,0],[−4,−1]],
+          tired:[[−3,−2]],sleeping:[[−2,0],[−2,−1]],
+          N:[[−1,−2],[−1,−3]],NE:[[0,−2],[0,−3]],
+          E:[[−3,0],[−3,−1]],SE:[[−5,−1],[−5,−2]],
+          S:[[−6,−3],[−7,−2]],SW:[[−5,−3],[−6,−1]],
+          W:[[−4,−2],[−4,−3]],NW:[[−1,0],[−1,−1]],
+          heart:[[−8,0],[−8,−1],[−8,−2],[−8,−3]],
         };
-        
-        // Fuentes aleatorias para las nubes
-        const randomFonts = [
-            "'Permanent Marker', cursive",
-            "'Shadows Into Light', cursive",
-            "'Caveat', cursive",
-            "'Righteous', cursive",
-            "'Bungee', cursive",
-            "'Creepster', cursive",
-            "'Fredoka One', cursive"
-        ];
-        
-        // Datos de ejemplo para demostración
-        const sampleResponses = [
-            { feeling: "¡Hoy me siento feliz!", reason: "El sol está brillando y vi a mis amigos." },
-            { feeling: "Un poco estresado.", reason: "El trabajo ha sido muy exigente últimamente." },
-            { feeling: "¡Emocionado por el fin de semana!", reason: "Tengo planes para hacer senderismo y es mi actividad favorita." },
-            { feeling: "Sintiéndome agradecido", reason: "Mi familia me sorprendió con un regalo detallado." },
-            { feeling: "Un poco ansioso", reason: "Tengo una presentación importante mañana." }
-        ];
-        
-        // Gestión de nubes
-        const maxClouds = 8;
-        let cloudZIndex = 1;
-        
-        // Inicializar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            // Cargar respuestas de ejemplo para demostración
-            loadSampleResponses();
-            
-            // Configurar event listeners
-            document.getElementById('submit-btn').addEventListener('click', submitForm);
-            
-            // Mover bobblehead al input activo
-            document.getElementById('feeling-input').addEventListener('focus', moveBobblehead);
-            document.getElementById('reason-input').addEventListener('focus', moveBobblehead);
-            
-            // Verificar datos offline para sincronizar
-            checkAndSyncOfflineData();
-        });
-        
-        // Mover bobblehead al input enfocado
-        function moveBobblehead(e) {
-            const bobblehead = document.getElementById('bobblehead');
-            const inputRect = e.target.getBoundingClientRect();
-            
-            bobblehead.style.left = `${inputRect.left - 120}px`;
-            bobblehead.style.top = `${inputRect.top - 50}px`;
+
+        function sprite(name, f) {
+          const s = S[name][f % S[name].length];
+          el.style.backgroundPosition = `${s[0]*32}px ${s[1]*32}px`;
         }
-        
-        // Enviar el formulario
-        async function submitForm() {
-            const feeling = document.getElementById('feeling-input').value.trim();
-            const reason = document.getElementById('reason-input').value.trim();
-            
-            if (!feeling) {
-                showNotification('¡Contanos cómo te sentís!', 'error');
-                return;
-            }
-            
-            // Deshabilitar botón y mostrar loading
-            const submitBtn = document.getElementById('submit-btn');
-            submitBtn.disabled = true;
-            showLoading(true);
-            
-            try {
-                // Enviar a Google Sheets
-                await sendToGoogleSheets(feeling, reason);
-                
-                // Crear animación de nube
-                createCloud(feeling, reason);
-                
-                // Limpiar el formulario DESPUÉS de éxito
-                document.getElementById('feeling-input').value = '';
-                document.getElementById('reason-input').value = '';
-                
-                // Resetear posición del bobblehead
-                const bobblehead = document.getElementById('bobblehead');
-                bobblehead.style.left = '';
-                bobblehead.style.top = '';
-                
-            } catch (error) {
-                console.error('Error de envío:', error);
-                
-                // Verificar si realmente estamos offline
-                if (!navigator.onLine) {
-                    // Solo guardar offline si realmente no hay conexión
-                    saveOfflineData(feeling, reason);
-                    showNotification('Guardado offline. Se sincronizará cuando vuelva la conexión.', 'info');
-                } else {
-                    // Si estamos online pero hay error, mostrar error de servidor
-                    showNotification('Error del servidor. Intentá de nuevo en unos minutos.', 'error');
-                }
-            } finally {
-                submitBtn.disabled = false;
-                showLoading(false);
-            }
+        function resetIdle() { idleAnim = null; idleFrame = 0; }
+
+        function tickIdle(dx, dy) {
+          idle++;
+          if (idle > 10 && !idleAnim) {
+            const opts = ['sleeping','scratchSelf'];
+            if (px < 32)                     opts.push('scratchWallW');
+            if (py < 32)                     opts.push('scratchWallN');
+            if (px > window.innerWidth  - 32) opts.push('scratchWallE');
+            if (py > window.innerHeight - 32) opts.push('scratchWallS');
+            idleAnim = opts[Math.floor(Math.random() * opts.length)];
+          }
+          switch (idleAnim) {
+            case 'sleeping':
+              if (idleFrame < 8) { sprite('tired', 0); break; }
+              if (mouseDown && dy < 8 && dy > -18 && dx < 18 && dx > -18)
+                sprite('heart', Math.floor(idleFrame / 4));
+              else
+                sprite('sleeping', Math.floor(idleFrame / 4));
+              if (idleFrame > 192) resetIdle();
+              break;
+            case 'scratchWallN': case 'scratchWallS':
+            case 'scratchWallE': case 'scratchWallW':
+            case 'scratchSelf':
+              sprite(idleAnim, idleFrame);
+              if (idleFrame > 9) resetIdle();
+              break;
+            default: sprite('idle', 0); return;
+          }
+          idleFrame++;
         }
-        
-        // Enviar datos a Google Sheets via Apps Script - Método mejorado
-        async function sendToGoogleSheets(feeling, reason) {
-            const formData = new FormData();
-            formData.append('feeling', feeling);
-            formData.append('reason', reason);
-            formData.append('timestamp', new Date().toISOString());
-            
-            const response = await fetch(GOOGLE_SHEETS_CONFIG.webAppUrl, {
-                method: 'POST',
-                body: formData
-            });
-            
-            const result = await response.json();
-            
-            if (result.status === 'success') {
-                showNotification('¡Gracias por compartir! Tus sentimientos fueron registrados.', 'success');
-            } else {
-                throw new Error(result.message || 'Error desconocido');
-            }
+
+        function tick() {
+          frames++;
+          const dx = px - mx, dy = py - my;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < VEL || dist < 48) { tickIdle(dx, dy); return; }
+          idleAnim = null; idleFrame = 0;
+          if (idle > 1) {
+            sprite('alert', 0);
+            idle = Math.min(idle, 7) - 1;
+            return;
+          }
+          let dir  = dy / dist >  0.5 ? 'N' : '';
+          dir     += dy / dist < -0.5 ? 'S' : '';
+          dir     += dx / dist >  0.5 ? 'W' : '';
+          dir     += dx / dist < -0.5 ? 'E' : '';
+          sprite(dir || 'idle', frames);
+          px -= (dx / dist) * VEL;
+          py -= (dy / dist) * VEL;
+          px = Math.min(Math.max(16, px), window.innerWidth  - 16);
+          py = Math.min(Math.max(16, py), window.innerHeight - 16);
+          el.style.left = `${px - 16}px`;
+          el.style.top  = `${py - 16}px`;
         }
-        
-        // Guardar datos offline para sincronizar después
-        function saveOfflineData(feeling, reason) {
-            const offlineData = {
-                timestamp: new Date().toISOString(),
-                feeling: feeling,
-                reason: reason
-            };
-            
-            const storedData = JSON.parse(localStorage.getItem('feelingsPollOffline') || '[]');
-            storedData.push(offlineData);
-            localStorage.setItem('feelingsPollOffline', JSON.stringify(storedData));
+
+        el.style.left = `${px}px`;
+        el.style.top  = `${py}px`;
+
+        document.onmousemove = e => { mx = e.clientX; my = e.clientY; };
+        function toggleMouse(e) {
+          mouseDown = ((e.buttons !== undefined ? e.buttons : e.which) & 1) === 1;
         }
-        
-        // Verificar y sincronizar datos offline
-        async function checkAndSyncOfflineData() {
-            if (!navigator.onLine) {
-                return;
-            }
-            
-            const offlineData = JSON.parse(localStorage.getItem('feelingsPollOffline') || '[]');
-            
-            if (offlineData.length > 0) {
-                showNotification(`Sincronizando ${offlineData.length} envíos offline...`, 'info');
-                
-                let syncedCount = 0;
-                for (const data of offlineData) {
-                    try {
-                        await sendToGoogleSheets(data.feeling, data.reason);
-                        syncedCount++;
-                    } catch (error) {
-                        console.error('Falló la sincronización:', error);
-                        break;
-                    }
-                }
-                
-                if (syncedCount > 0) {
-                    const remainingData = offlineData.slice(syncedCount);
-                    localStorage.setItem('feelingsPollOffline', JSON.stringify(remainingData));
-                    showNotification('¡Todos los datos offline se sincronizaron exitosamente!', 'success');
-                }
-            }
+        window._onekoToggleMouse = toggleMouse;
+        document.addEventListener('mousedown', toggleMouse);
+        document.addEventListener('mouseup',   toggleMouse);
+        window._onekoInterval = setInterval(tick, 100);
+      },
+    },
+
+
+    /* ────────────────────────────────────────────
+       MÓDULO: SINCRONIZACIÓN OFFLINE
+       Cuando vuelve la conexión, reintenta enviar
+       los datos guardados localmente.
+    ──────────────────────────────────────────── */
+    {
+      nombre: 'offline',
+      etiqueta: '📡 Sync offline',
+      activo: true,
+      _handler: null,
+
+      init() {
+        this._handler = () => this._sincronizar();
+        window.addEventListener('online',  this._handler);
+        window.addEventListener('offline', () => notif('Sin conexión. Los datos se guardan localmente.', 'info'));
+        // Intentar al cargar si ya hay datos pendientes
+        if (navigator.onLine) this._sincronizar();
+      },
+
+      destroy() {
+        if (this._handler) window.removeEventListener('online', this._handler);
+      },
+
+      async _sincronizar() {
+        const pendientes = leerLS('pendientes', []);
+        if (!pendientes.length) return;
+        notif(`Sincronizando ${pendientes.length} envío(s) offline…`, 'info');
+        let ok = 0;
+        for (const d of pendientes) {
+          try {
+            const fd = new FormData();
+            fd.append('feeling',   d.sentimiento || '');
+            fd.append('reason',    d.razon       || '');
+            fd.append('timestamp', new Date(d.ts).toISOString());
+            await fetch(APPS_SCRIPT_URL, { method: 'POST', body: fd });
+            ok++;
+          } catch(e) { break; }
         }
-        
-        // Crear una nube con el envío
-        function createCloud(feeling, reason) {
-            const container = document.getElementById('clouds-container');
-            const cloud = document.createElement('div');
-            cloud.className = 'cloud';
-            
-            // Gestionar cantidad de nubes
-            const clouds = container.querySelectorAll('.cloud');
-            if (clouds.length >= maxClouds) {
-                container.removeChild(clouds[0]);
-            }
-            
-            // Posición aleatoria
-            const maxLeft = container.offsetWidth - 300;
-            const maxTop = container.offsetHeight - 200;
-            cloud.style.left = `${Math.random() * maxLeft}px`;
-            cloud.style.top = `${Math.random() * maxTop}px`;
-            
-            // Retraso de animación aleatorio
-            cloud.style.animationDelay = `${Math.random() * 5}s`;
-            
-            // Fuente aleatoria
-            const randomFont = randomFonts[Math.floor(Math.random() * randomFonts.length)];
-            cloud.style.setProperty('--random-font', randomFont);
-            
-            // Almacenar datos de clic
-            cloud.clickCount = 0;
-            cloud.lastClickTime = 0;
-            
-            // Agregar event listener de clic
-            cloud.addEventListener('click', function(e) {
-                handleCloudClick(this, e);
-            });
-            
-            // Combinar feeling y reason
-            const combinedText = `<strong>Sentimiento:</strong> ${feeling}<br><strong>Por qué:</strong> ${reason}`;
-            cloud.innerHTML = `<div class="cloud-text">${combinedText}</div><div class="cloud-instruction">Clic para traer al frente • Triple clic para sorpresa</div>`;
-            
-            container.appendChild(cloud);
+        if (ok > 0) {
+          guardarLS('pendientes', pendientes.slice(ok));
+          notif(`✅ ${ok} envío(s) sincronizados.`, 'success');
         }
-        
-        // Manejar eventos de clic en nubes
-        function handleCloudClick(cloud, event) {
-            const currentTime = Date.now();
-            
-            // Traer nube al frente
-            bringToFront(cloud);
-            
-            // Verificar triple clic
-            if (currentTime - cloud.lastClickTime < 5000) {
-                cloud.clickCount++;
-                
-                if (cloud.clickCount === 3) {
-                    triggerHeartAnimation(cloud);
-                    cloud.clickCount = 0;
-                }
-            } else {
-                cloud.clickCount = 1;
-            }
-            
-            cloud.lastClickTime = currentTime;
+      },
+    },
+
+  ]; // ← fin de MODULOS
+
+
+  /* ══════════════════════════════
+     MOTOR DEL PANEL
+  ══════════════════════════════ */
+
+  function montarPanel() {
+    const panel = document.getElementById('panel-modulos');
+    MODULOS.forEach(mod => {
+      const label = document.createElement('label');
+      label.className = 'mod-fila';
+
+      const chk = document.createElement('input');
+      chk.type    = 'checkbox';
+      chk.checked = mod.activo;
+
+      const txt = document.createElement('span');
+      txt.textContent = mod.etiqueta;
+
+      const badge = document.createElement('span');
+      badge.className = 'mod-badge ' + (mod.activo ? 'on' : 'off');
+      badge.textContent = mod.activo ? 'ON' : 'OFF';
+
+      chk.addEventListener('change', () => {
+        mod.activo = chk.checked;
+        badge.className  = 'mod-badge ' + (mod.activo ? 'on' : 'off');
+        badge.textContent = mod.activo ? 'ON' : 'OFF';
+        try {
+          if (mod.activo) mod.init();
+          else            mod.destroy();
+        } catch(e) {
+          console.error(`Error en módulo "${mod.nombre}":`, e);
         }
-        
-        // Traer nube al frente
-        function bringToFront(cloud) {
-            const clouds = document.querySelectorAll('.cloud');
-            clouds.forEach(c => c.classList.remove('front'));
-            
-            cloud.classList.add('front');
-            cloudZIndex++;
-            cloud.style.zIndex = cloudZIndex;
-        }
-        
-        // Activar animación de corazón
-        function triggerHeartAnimation(cloud) {
-            cloud.classList.add('pop');
-            
-            const heart = document.createElement('div');
-            heart.className = 'heart';
-            cloud.appendChild(heart);
-            
-            setTimeout(() => {
-                heart.classList.add('animate');
-            }, 100);
-            
-            setTimeout(() => {
-                heart.remove();
-                cloud.classList.remove('pop');
-            }, 1500);
-            
-            showNotification('💖 ¡Encontraste el corazón secreto! 💖', 'success');
-        }
-        
-        // Mostrar notificación
-        function showNotification(message, type) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = 'notification show';
-            
-            if (type === 'error') {
-                notification.style.background = '#ff3366';
-                notification.style.color = '#fff';
-            } else if (type === 'info') {
-                notification.style.background = '#33ffcc';
-                notification.style.color = '#222';
-            } else {
-                notification.style.background = '#fff';
-                notification.style.color = '#222';
-            }
-            
-            setTimeout(() => {
-                notification.className = 'notification';
-            },3000);
-        }
-        
-        // Mostrar/ocultar indicador de carga
-        function showLoading(show) {
-            const loading = document.getElementById('loading');
-            if (show) {
-                loading.classList.add('show');
-            } else {
-                loading.classList.remove('show');
-            }
-        }
-        
-        // Cargar respuestas de ejemplo para demostración
-        function loadSampleResponses() {
-            sampleResponses.forEach((response, index) => {
-                setTimeout(() => {
-                    createCloud(response.feeling, response.reason);
-                }, index * 500);
-            });
-        }
-        
-        // Escuchar cambios de conexión
-        window.addEventListener('online', function() {
-            checkAndSyncOfflineData();
-        });
-        
-        window.addEventListener('offline', function() {
-            showNotification('Sin conexión. Los datos se guardarán localmente.', 'info');
-        });
-    </script>
+      });
 
-    <!-- Juego Nubes -->
-    <style>
-        /* Estilos específicos para el juego de nubes */
-        #cloud-game-section {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 30vh; /* Altura del área del juego */
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            z-index: 500; /* Asegurar que esté por encima del fondo pero por debajo de contenido importante */
-            overflow: hidden;
-            border-top: 2px dashed var(--secondary-color);
-        }
-        .game-cloud {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            cursor: pointer;
-            opacity: 0;
-            transform: scale(0);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            background: var(--cloud-color, white); /* Color por defecto */
-        }
-        .game-cloud-green {
-            background: var(--secondary-color);
-        }
-        .game-cloud-white {
-            background: white;
-        }
-        .game-cloud-fading {
-            opacity: 0 !important;
-            transform: scale(0) !important;
-        }
-    </style>
+      label.appendChild(chk);
+      label.appendChild(txt);
+      label.appendChild(badge);
+      panel.appendChild(label);
+    });
+  }
 
-    <div id="cloud-game-section">
-        <h2 style="position:absolute; top:10px; left:20px; z-index:5; color:white; font-size:1.2rem; opacity:0.8;">Relax: Pop the Clouds</h2>
-    </div>
+  /* ══════════════════════════════
+     ARRANQUE
+  ══════════════════════════════ */
 
-    <script>
-        // Usamos una IIFE (Immediately Invoked Function Expression)
-        // Esto crea una "burbuja privada" para el código del juego.
-        // Las variables aquí (como 'createCloud') NO entrarán en conflicto con otros scripts en la página.
-        (function() {
-            const gameContainer = document.getElementById('cloud-game-section');
-            let greenCloudTimer;
+  document.addEventListener('DOMContentLoaded', () => {
+    montarPanel();
+    MODULOS.forEach(mod => {
+      if (mod.activo) {
+        try { mod.init(); }
+        catch(e) { console.error(`Error iniciando "${mod.nombre}":`, e); }
+      }
+    });
+  });
 
-            function startGame() {
-                // Limpiar el contenedor del juego, excepto el título
-                const title = gameContainer.querySelector('h2');
-                gameContainer.innerHTML = ''; // Limpiar todo
-                if (title) {
-                    gameContainer.appendChild(title); // Re-agregar el título si existía
-                } else {
-                    gameContainer.innerHTML = '<h2 style="position:absolute; top:10px; left:20px; z-index:5; color:white; font-size:1.2rem; opacity:0.8;">Relax: Pop the Clouds</h2>';
-                }
-                
-                if (greenCloudTimer) clearTimeout(greenCloudTimer);
-                
-                createGameCloud(false, true); // Crear la primera nube blanca
-                scheduleNextGreenCloud();
-            }
-
-            function createGameCloud(isGreen = false, isWhite = false) {
-                const cloud = document.createElement('div');
-                cloud.className = 'game-cloud'; // Usar la nueva clase .game-cloud
-
-                if (isGreen) cloud.classList.add('game-cloud-green');
-                else if (isWhite) cloud.classList.add('game-cloud-white');
-                else {
-                    const hue = Math.floor(Math.random() * 360);
-                    cloud.style.setProperty('--cloud-color', `hsl(${hue}, 70%, 85%)`);
-                }
-
-                // Calcular posición basada en el tamaño del CONTENEDOR, no de la ventana
-                const containerRect = gameContainer.getBoundingClientRect();
-                const cloudSize = 120; // ancho aproximado
-
-                // Ajustar para que las nubes no se superpongan con el título
-                const titleHeight = 50; 
-                const randomTop = Math.random() * (containerRect.height - cloudSize - titleHeight) + titleHeight;
-                const randomLeft = Math.random() * (containerRect.width - cloudSize);
-
-                cloud.style.top = `${randomTop}px`;
-                cloud.style.left = `${randomLeft}px`;
-
-                cloud.addEventListener('pointerdown', onGameCloudClick);
-                gameContainer.appendChild(cloud);
-
-                // Forzar un reflow antes de aplicar la transición para que la animación inicial funcione
-                cloud.offsetHeight; 
-                cloud.style.opacity = '1';
-                cloud.style.transform = 'scale(1)';
-            }
-
-            function onGameCloudClick(e) {
-                const clickedCloud = e.currentTarget;
-                if (clickedCloud.classList.contains('game-cloud-fading')) return;
-
-                if (clickedCloud.classList.contains('game-cloud-green')) {
-                    resetGame();
-                } else {
-                    splitGameCloud(clickedCloud);
-                }
-            }
-
-            function splitGameCloud(cloud) {
-                cloud.classList.add('game-cloud-fading');
-                cloud.removeEventListener('pointerdown', onGameCloudClick);
-                
-                setTimeout(() => cloud.remove(), 400); // Esperar a que termine la transición de opacidad/escala
-                createGameCloud();
-                createGameCloud();
-            }
-
-            function resetGame() {
-                const allClouds = gameContainer.querySelectorAll('.game-cloud');
-                allClouds.forEach(cloud => {
-                    cloud.classList.add('game-cloud-fading');
-                    cloud.removeEventListener('pointerdown', onGameCloudClick);
-                    setTimeout(() => cloud.remove(), 400);
-                });
-                setTimeout(() => startGame(), 450);
-            }
-
-            function scheduleNextGreenCloud() {
-                const randomTime = Math.random() * 10000 + 5000; // Entre 5 y 15 segundos
-                greenCloudTimer = setTimeout(() => {
-                    if(document.body.contains(gameContainer)) { // Verificar si el juego todavía existe
-                        createGameCloud(true); // Crear una nube verde
-                        scheduleNextGreenCloud(); // Programar la siguiente
-                    }
-                }, randomTime);
-            }
-
-            // Iniciar el juego cuando se carga la página
-            startGame();
-
-        })(); // Fin del Ámbito Aislado
-    </script>
-
+  </script>
 </body>
 </html>
-
