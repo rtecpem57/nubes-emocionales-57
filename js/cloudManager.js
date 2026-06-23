@@ -3,9 +3,9 @@
  * Maneja la creación, visualización y eventos de las nubes emocionales
  */
 
-
 import { config } from './config.js';
-class CloudManager {
+
+export class CloudManager {
     constructor(config) {
         this.config = config;
         this.container = null;
