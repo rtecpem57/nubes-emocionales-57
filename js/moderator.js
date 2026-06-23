@@ -6,7 +6,7 @@
 
 import { config } from './config.js';
 
-class ContentModerator {
+export class ContentModerator {
     constructor(config) {
         this.config = config;
         this.apiToken = config.MODERATION.HF_API_TOKEN;
@@ -145,7 +145,5 @@ class ContentModerator {
     }
 }
 
-// Exportar para uso en otros módulos
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ContentModerator;
-}
+// Exportar para uso en otros módulos (ES6)
+export { ContentModerator };
