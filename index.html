@@ -4,17 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nubes Emocionales</title>
-
-  <!-- Favicon inline SVG -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☁️</text></svg>">
-
-  <!-- Tipografías -->
   <link href="https://fonts.googleapis.com/css2?family=Rubik+Distressed&family=Caveat:wght@400;700&family=Righteous&family=Fredoka+One&family=Permanent+Marker&family=Shadows+Into+Light&family=Bungee&family=Creepster&display=swap" rel="stylesheet" />
-
   <style>
-    /* ══════════════════════════════════════
-       TOKENS
-    ══════════════════════════════════════ */
     :root {
       --rosa:    #ff3366;
       --menta:   #33ffcc;
@@ -24,419 +16,180 @@
       --corazon: #ff69b4;
       --radio:   20px;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'Fredoka One', cursive;
       background: linear-gradient(135deg, var(--rosa) 0%, var(--menta) 50%, var(--sol) 100%);
       min-height: 100vh;
       overflow-x: hidden;
     }
-
-    /* ══════════════════════════════════════
-       PANEL DE MÓDULOS — minimizable abajo
-    ══════════════════════════════════════ */
     #panel-modulos {
       position: fixed;
-      bottom: 0;
-      left: 50%;
+      bottom: 0; left: 50%;
       transform: translateX(-50%);
       z-index: 2000;
       background: rgba(255,255,255,0.96);
       border-radius: var(--radio) var(--radio) 0 0;
       box-shadow: 0 -4px 24px rgba(0,0,0,0.18);
-      min-width: 220px;
-      max-width: 92vw;
+      min-width: 220px; max-width: 92vw;
       backdrop-filter: blur(10px);
       border: 2px dashed var(--rosa);
       border-bottom: none;
       overflow: hidden;
     }
     #panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
       padding: 0.55rem 1.2rem;
-      cursor: pointer;
-      user-select: none;
+      cursor: pointer; user-select: none;
       font-family: 'Bungee', cursive;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em;
       color: var(--oscuro);
     }
     #panel-header:hover { background: rgba(255,51,102,0.06); }
-    #panel-chevron {
-      font-size: 0.7rem;
-      transition: transform 0.3s ease;
-      display: inline-block;
-    }
+    #panel-chevron { font-size: 0.7rem; transition: transform 0.3s ease; display: inline-block; }
     #panel-modulos.abierto #panel-chevron { transform: rotate(180deg); }
     #panel-contenido {
-      max-height: 0;
-      overflow: hidden;
+      max-height: 0; overflow: hidden;
       transition: max-height 0.35s ease, padding 0.35s ease;
       padding: 0 1.2rem;
     }
-    #panel-modulos.abierto #panel-contenido {
-      max-height: 400px;
-      padding: 0.3rem 1.2rem 0.9rem;
-    }
+    #panel-modulos.abierto #panel-contenido { max-height: 400px; padding: 0.3rem 1.2rem 0.9rem; }
     .mod-fila {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.45rem;
-      font-size: 0.88rem;
-      cursor: pointer;
-      user-select: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 0.45rem; font-size: 0.88rem;
+      cursor: pointer; user-select: none;
     }
-    .mod-fila input[type="checkbox"] {
-      width: 15px; height: 15px;
-      accent-color: var(--rosa);
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .mod-badge {
-      margin-left: auto;
-      font-size: 0.65rem;
-      font-family: 'Righteous', cursive;
-      padding: 1px 6px;
-      border-radius: 20px;
-    }
+    .mod-fila input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--rosa); cursor: pointer; flex-shrink: 0; }
+    .mod-badge { margin-left: auto; font-size: 0.65rem; font-family: 'Righteous', cursive; padding: 1px 6px; border-radius: 20px; }
     .mod-badge.on  { background: #c8f5c8; color: #1b5e20; }
     .mod-badge.off { background: #ffd0d0; color: #b71c1c; }
-
-    /* ══════════════════════════════════════
-       ENCABEZADO
-    ══════════════════════════════════════ */
-    header {
-      text-align: center;
-      padding: 2.5rem 1rem 1rem;
-    }
+    header { text-align: center; padding: 2.5rem 1rem 1rem; }
     header h1 {
       font-family: 'Rubik Distressed', cursive;
       font-size: clamp(2.2rem, 7vw, 4rem);
-      color: var(--blanco);
-      text-shadow: 3px 3px 0 var(--oscuro);
-      transform: rotate(-2deg);
-      display: inline-block;
+      color: var(--blanco); text-shadow: 3px 3px 0 var(--oscuro);
+      transform: rotate(-2deg); display: inline-block;
       animation: pulso 2.5s ease-in-out infinite;
     }
     @keyframes pulso {
       0%,100% { transform: rotate(-2deg) scale(1); }
       50%      { transform: rotate(-2deg) scale(1.04); }
     }
-    header p {
-      font-family: 'Caveat', cursive;
-      font-size: 1.3rem;
-      color: var(--blanco);
-      margin-top: 0.5rem;
-      opacity: 0.9;
-    }
-
-    /* ══════════════════════════════════════
-       FORMULARIO
-    ══════════════════════════════════════ */
+    header p { font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--blanco); margin-top: 0.5rem; opacity: 0.9; }
     #seccion-formulario {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
-      padding: 1.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 1.5rem; padding: 1.5rem;
+      max-width: 1100px; margin: 0 auto;
     }
     .modulo-input {
       background: rgba(255,255,255,0.92);
-      border-radius: var(--radio);
-      padding: 1.5rem;
-      width: 100%;
-      max-width: 460px;
+      border-radius: var(--radio); padding: 1.5rem;
+      width: 100%; max-width: 460px;
       box-shadow: 0 8px 28px rgba(0,0,0,0.18);
       transition: transform 0.25s ease;
     }
     .modulo-input:nth-child(1) { transform: rotate(-2deg); border: 3px dashed var(--rosa); }
     .modulo-input:nth-child(2) { transform: rotate(1.5deg); border: 3px dashed var(--menta); }
-    .modulo-input:hover        { transform: scale(1.02) rotate(0deg); z-index: 10; }
-
-    .modulo-input h2 {
-      font-family: 'Bungee', cursive;
-      color: var(--oscuro);
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-    }
-    .modulo-input .instruccion {
-      font-family: 'Caveat', cursive;
-      font-size: 1rem;
-      opacity: 0.7;
-      margin-bottom: 0.6rem;
-    }
+    .modulo-input:hover { transform: scale(1.02) rotate(0deg); z-index: 10; }
+    .modulo-input h2 { font-family: 'Bungee', cursive; color: var(--oscuro); font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .modulo-input .instruccion { font-family: 'Caveat', cursive; font-size: 1rem; opacity: 0.7; margin-bottom: 0.6rem; }
     .modulo-input textarea {
-      width: 100%;
-      min-height: 110px;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 10px;
-      font-family: 'Caveat', cursive;
-      font-size: 1.15rem;
-      resize: vertical;
-      background: rgba(255,255,255,0.6);
-      color: var(--oscuro);
+      width: 100%; min-height: 110px; padding: 0.8rem;
+      border: none; border-radius: 10px;
+      font-family: 'Caveat', cursive; font-size: 1.15rem; resize: vertical;
+      background: rgba(255,255,255,0.6); color: var(--oscuro);
       transition: background 0.2s, box-shadow 0.2s;
     }
-    .modulo-input textarea:focus {
-      outline: none;
-      background: rgba(255,255,255,0.95);
-      box-shadow: 0 0 0 3px var(--sol);
-    }
-
-    /* Botón enviar */
+    .modulo-input textarea:focus { outline: none; background: rgba(255,255,255,0.95); box-shadow: 0 0 0 3px var(--sol); }
     #contenedor-enviar { text-align: center; margin: 1.5rem 0; }
     #btn-enviar {
-      background: var(--sol);
-      color: var(--oscuro);
-      border: none;
-      padding: 0.9rem 2.5rem;
-      font-family: 'Righteous', cursive;
-      font-size: 1.3rem;
-      border-radius: 50px;
-      cursor: pointer;
+      background: var(--sol); color: var(--oscuro); border: none;
+      padding: 0.9rem 2.5rem; font-family: 'Righteous', cursive; font-size: 1.3rem;
+      border-radius: 50px; cursor: pointer;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       transition: all 0.2s ease;
     }
     #btn-enviar:hover  { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
     #btn-enviar:active { transform: scale(0.97); }
     #btn-enviar:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    /* ══════════════════════════════════════
-       SECCIÓN NUBES EMOCIONALES
-    ══════════════════════════════════════ */
-    #seccion-nubes {
-      padding: 3rem 1rem 2rem;
-    }
+    #seccion-nubes { padding: 3rem 1rem 2rem; }
     #seccion-nubes h2 {
       font-family: 'Creepster', cursive;
       font-size: clamp(1.8rem, 5vw, 3rem);
-      text-align: center;
-      color: var(--blanco);
-      text-shadow: 2px 2px 0 var(--oscuro);
-      margin-bottom: 0.5rem;
+      text-align: center; color: var(--blanco);
+      text-shadow: 2px 2px 0 var(--oscuro); margin-bottom: 0.5rem;
     }
-    #seccion-nubes .pista {
-      text-align: center;
-      font-family: 'Caveat', cursive;
-      font-size: 1.1rem;
-      color: var(--blanco);
-      opacity: 0.85;
-      margin-bottom: 2rem;
-    }
-    #contenedor-nubes {
-      position: relative;
-      max-width: 1100px;
-      margin: 0 auto;
-      min-height: 420px;
-    }
+    #seccion-nubes .pista { text-align: center; font-family: 'Caveat', cursive; font-size: 1.1rem; color: var(--blanco); opacity: 0.85; margin-bottom: 2rem; }
+    #contenedor-nubes { position: relative; max-width: 1100px; margin: 0 auto; min-height: 420px; }
     .nube {
-      position: absolute;
-      background: rgba(255,255,255,0.88);
-      border-radius: 50px;
-      padding: 1.2rem 1.5rem;
-      max-width: 280px;
+      position: absolute; background: rgba(255,255,255,0.88);
+      border-radius: 50px; padding: 1.2rem 1.5rem; max-width: 280px;
       box-shadow: 0 5px 18px rgba(0,0,0,0.12);
       cursor: pointer;
       animation: flotar 8s ease-in-out infinite;
-      transition: transform 0.3s ease, z-index 0s;
-      z-index: 1;
+      transition: transform 0.3s ease, z-index 0s; z-index: 1;
     }
     .nube:hover { transform: scale(1.06); z-index: 100; }
-    .nube::before {
-      content: '';
-      position: absolute;
-      background: rgba(255,255,255,0.88);
-      border-radius: 50%;
-      width: 90px; height: 90px;
-      top: -35px; left: 25px;
-    }
-    .nube::after {
-      content: '';
-      position: absolute;
-      background: rgba(255,255,255,0.88);
-      border-radius: 50%;
-      width: 70px; height: 70px;
-      top: -18px; right: 25px;
-    }
-    .nube-texto {
-      position: relative;
-      z-index: 1;
-      font-size: 1rem;
-      line-height: 1.5;
-      color: var(--oscuro);
-    }
+    .nube::before { content: ''; position: absolute; background: rgba(255,255,255,0.88); border-radius: 50%; width: 90px; height: 90px; top: -35px; left: 25px; }
+    .nube::after  { content: ''; position: absolute; background: rgba(255,255,255,0.88); border-radius: 50%; width: 70px; height: 70px; top: -18px; right: 25px; }
+    .nube-texto { position: relative; z-index: 1; font-size: 1rem; line-height: 1.5; color: var(--oscuro); }
     .nube-pista {
-      position: absolute;
-      bottom: -28px; left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-family: 'Caveat', cursive;
-      font-size: 0.8rem;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
+      position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.7); color: white;
+      padding: 3px 10px; border-radius: 20px;
+      font-family: 'Caveat', cursive; font-size: 0.8rem; white-space: nowrap;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
     }
     .nube:hover .nube-pista { opacity: 1; }
-    @keyframes flotar {
-      0%,100% { transform: translateY(0); }
-      50%      { transform: translateY(-16px); }
-    }
-
-    /* Corazón (easter egg) */
-    .corazon {
-      position: absolute;
-      width: 60px; height: 60px;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      opacity: 0;
-      pointer-events: none;
-      font-size: 2.5rem;
-      text-align: center;
-      line-height: 60px;
-    }
-    .corazon.animar {
-      animation: corazonPop 1.4s ease-in-out forwards;
-    }
+    @keyframes flotar { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+    .corazon { position: absolute; width: 60px; height: 60px; top: 50%; left: 50%; transform: translate(-50%,-50%); opacity: 0; pointer-events: none; font-size: 2.5rem; text-align: center; line-height: 60px; }
+    .corazon.animar { animation: corazonPop 1.4s ease-in-out forwards; }
     @keyframes corazonPop {
       0%   { opacity:0; transform: translate(-50%,-50%) scale(0); }
       50%  { opacity:1; transform: translate(-50%,-50%) scale(1.6); }
       100% { opacity:0; transform: translate(-50%,-50%) scale(0); }
     }
     .nube.pop { animation: cloudPop 0.4s ease-in-out; }
-    @keyframes cloudPop {
-      0%   { transform: scale(1); }
-      50%  { transform: scale(0.85); opacity: 0.6; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    /* ══════════════════════════════════════
-       JUEGO DE NUBES — inline, bajo las nubes
-    ══════════════════════════════════════ */
+    @keyframes cloudPop { 0% { transform: scale(1); } 50% { transform: scale(0.85); opacity: 0.6; } 100% { transform: scale(1); opacity: 1; } }
     #seccion-juego {
-      position: relative;
-      width: 100%;
+      position: relative; width: 100%;
       background: rgba(0,0,0,0.18);
-      border-top: 2px dashed var(--menta);
-      border-bottom: 2px dashed var(--menta);
-      overflow: hidden;
-      height: 160px;
+      border-top: 2px dashed var(--menta); border-bottom: 2px dashed var(--menta);
+      overflow: hidden; height: 160px;
     }
-    #juego-cabecera {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.35rem 1rem;
-      pointer-events: none;
-      position: relative;
-      z-index: 5;
-    }
-    #juego-cabecera .juego-titulo {
-      font-family: 'Caveat', cursive;
-      font-size: 0.9rem;
-      color: white;
-      opacity: 0.85;
-    }
-    #juego-puntaje {
-      font-family: 'Righteous', cursive;
-      font-size: 1rem;
-      color: var(--sol);
-      text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
-    }
+    #juego-cabecera { display: flex; align-items: center; justify-content: space-between; padding: 0.35rem 1rem; pointer-events: none; position: relative; z-index: 5; }
+    #juego-cabecera .juego-titulo { font-family: 'Caveat', cursive; font-size: 0.9rem; color: white; opacity: 0.85; }
+    #juego-puntaje { font-family: 'Righteous', cursive; font-size: 1rem; color: var(--sol); text-shadow: 1px 1px 0 rgba(0,0,0,0.4); }
     .nube-juego {
-      position: absolute;
-      width: 60px; height: 60px;
-      border-radius: 50%;
-      cursor: pointer;
-      opacity: 0;
-      transform: scale(0);
+      position: absolute; width: 60px; height: 60px; border-radius: 50%;
+      cursor: pointer; opacity: 0; transform: scale(0);
       transition: opacity 0.35s ease, transform 0.35s ease;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.18);
-      touch-action: manipulation;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.18); touch-action: manipulation;
     }
-    .nube-juego.visible   { opacity: 1;  transform: scale(1); }
-    .nube-juego.saliendo  { opacity: 0 !important; transform: scale(0) !important; }
-    .nube-juego-reset {
-      background: radial-gradient(circle at 40% 35%, #fff 20%, #7ee8fa 60%, #33c6f5 100%);
-      border: 2px solid rgba(255,255,255,0.7);
-    }
-
-    /* ══════════════════════════════════════
-       ONEKO
-    ══════════════════════════════════════ */
-    #oneko {
-      width: 31px; height: 31px;
-      position: fixed;
-      pointer-events: none;
-      image-rendering: pixelated;
-      background-image: url('https://adryd.com/static/neko/neko.gif');
-      z-index: 9999;
-    }
-
-    /* ══════════════════════════════════════
-       NOTIFICACIÓN
-    ══════════════════════════════════════ */
+    .nube-juego.visible  { opacity: 1;  transform: scale(1); }
+    .nube-juego.saliendo { opacity: 0 !important; transform: scale(0) !important; }
+    .nube-juego-reset { background: radial-gradient(circle at 40% 35%, #fff 20%, #7ee8fa 60%, #33c6f5 100%); border: 2px solid rgba(255,255,255,0.7); }
+    #oneko { width: 31px; height: 31px; position: fixed; pointer-events: none; image-rendering: pixelated; background-image: url('https://adryd.com/static/neko/neko.gif'); z-index: 9999; }
     #notificacion {
-      position: fixed;
-      top: -80px; left: 50%;
-      transform: translateX(-50%);
-      background: var(--blanco);
-      color: var(--oscuro);
-      padding: 0.8rem 2rem;
-      border-radius: 50px;
+      position: fixed; top: -80px; left: 50%; transform: translateX(-50%);
+      background: var(--blanco); color: var(--oscuro);
+      padding: 0.8rem 2rem; border-radius: 50px;
       box-shadow: 0 5px 18px rgba(0,0,0,0.2);
-      font-family: 'Righteous', cursive;
-      font-size: 1rem;
-      transition: top 0.4s ease;
-      z-index: 3000;
-      white-space: nowrap;
+      font-family: 'Righteous', cursive; font-size: 1rem;
+      transition: top 0.4s ease; z-index: 3000; white-space: nowrap;
     }
     #notificacion.visible { top: 1.2rem; }
-
-    /* Spinner */
     #spinner {
-      display: none;
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      z-index: 4000;
+      display: none; position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%,-50%); z-index: 4000;
       width: 48px; height: 48px;
-      border: 5px solid rgba(255,255,255,0.3);
-      border-top: 5px solid white;
-      border-radius: 50%;
-      animation: girar 0.9s linear infinite;
+      border: 5px solid rgba(255,255,255,0.3); border-top: 5px solid white;
+      border-radius: 50%; animation: girar 0.9s linear infinite;
     }
     #spinner.visible { display: block; }
     @keyframes girar { to { transform: translate(-50%,-50%) rotate(360deg); } }
-
-    /* ══════════════════════════════════════
-       PIE
-    ══════════════════════════════════════ */
-    footer {
-      text-align: center;
-      padding: 1.5rem 1rem 5rem;
-      font-family: 'Caveat', cursive;
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.7);
-    }
+    footer { text-align: center; padding: 1.5rem 1rem 5rem; font-family: 'Caveat', cursive; font-size: 0.85rem; color: rgba(255,255,255,0.7); }
     footer a { color: inherit; }
-
-    /* ══════════════════════════════════════
-       RESPONSIVE
-    ══════════════════════════════════════ */
     @media (max-width: 600px) {
       #panel-modulos { min-width: 160px; font-size: 0.8rem; }
       .modulo-input  { max-width: 95%; transform: none !important; }
@@ -449,24 +202,19 @@
 </head>
 <body>
 
-  <!-- ─── PANEL DE MÓDULOS (minimizable) ─── -->
   <div id="panel-modulos">
     <div id="panel-header">
       <span>⚙️ Módulos</span>
       <span id="panel-chevron">▲</span>
     </div>
-    <div id="panel-contenido">
-      <!-- generado por JS -->
-    </div>
+    <div id="panel-contenido"></div>
   </div>
 
-  <!-- ─── ENCABEZADO ─── -->
   <header>
     <h1>Nubes Emocionales</h1>
     <p>Compartí cómo te sentís, en total anonimato</p>
   </header>
 
-  <!-- ─── FORMULARIO ─── -->
   <section id="seccion-formulario">
     <div class="modulo-input">
       <h2>¿Cómo te sentís hoy?</h2>
@@ -484,14 +232,12 @@
     <button id="btn-enviar" type="button">Compartir mis sentimientos ☁️</button>
   </div>
 
-  <!-- ─── NUBES EMOCIONALES ─── -->
   <section id="seccion-nubes">
     <h2>¡Lo que escuchamos!</h2>
     <p class="pista">Hacé clic en las nubes para traerlas al frente · ¡Triple clic para una sorpresa! 💖</p>
     <div id="contenedor-nubes"></div>
   </section>
 
-  <!-- ─── JUEGO ─── -->
   <div id="seccion-juego">
     <div id="juego-cabecera">
       <span class="juego-titulo">Relax: explotá los círculos ☁️</span>
@@ -499,7 +245,6 @@
     </div>
   </div>
 
-  <!-- ─── PIE ─── -->
   <footer>
     Proyecto educativo · Andes Unlimit 2020 ·
     <a href="https://github.com/andesunlimited2020-ops/nubes-emocionales" target="_blank" rel="noopener">GitHub</a><br/>
@@ -509,32 +254,16 @@
     Asistencia de código: <a href="https://claude.ai" target="_blank" rel="noopener">Claude (Anthropic)</a>
   </footer>
 
-  <!-- ─── UI helpers ─── -->
   <div id="notificacion"></div>
   <div id="spinner"></div>
 
-
-  <!-- ════════════════════════════════════════════════════════
-       SISTEMA DE MÓDULOS
-       ════════════════════════════════════════════════════════
-       Cada módulo tiene: { nombre, etiqueta, activo, init(), destroy() }
-       Para agregar uno nuevo: copiá el bloque y pegalo en el array MODULOS.
-       El panel de control se genera solo.
-  ════════════════════════════════════════════════════════════ -->
   <script>
-
-  /* ──────────────────────────────
-     UTILIDADES GLOBALES
-  ────────────────────────────── */
-
-  // Escapa texto para inserción segura en HTML (previene XSS)
+  /* ── UTILIDADES ── */
   function escapar(str) {
     const d = document.createElement('div');
     d.appendChild(document.createTextNode(String(str)));
     return d.innerHTML;
   }
-
-  // localStorage seguro
   function leerLS(clave, def) {
     try { const v = localStorage.getItem(clave); return v ? JSON.parse(v) : def; }
     catch(e) { return def; }
@@ -542,8 +271,6 @@
   function guardarLS(clave, val) {
     try { localStorage.setItem(clave, JSON.stringify(val)); } catch(e) {}
   }
-
-  // Notificación flotante
   function notif(msg, tipo) {
     const n = document.getElementById('notificacion');
     n.textContent = msg;
@@ -555,20 +282,40 @@
     clearTimeout(n._t);
     n._t = setTimeout(() => n.classList.remove('visible'), 3200);
   }
-
   function spinner(show) {
     document.getElementById('spinner').classList.toggle('visible', show);
   }
 
-  /* ──────────────────────────────
-     URL DEL APPS SCRIPT
-     (cambiar acá si la URL cambia)
-  ────────────────────────────── */
+  /* ── URL APPS SCRIPT ── */
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwURFusb-1SXJrfHfYUV-l9dmVuFohBXgeBN0OII8_b90z5WrtHTXRtp34WcFj6vylP/exec';
 
-  /* ──────────────────────────────
-     FUENTES ALEATORIAS PARA NUBES
-  ────────────────────────────── */
+  /*
+   * ┌─────────────────────────────────────────────────────────┐
+   * │  FUNCIÓN CENTRAL DE ENVÍO                               │
+   * │                                                         │
+   * │  Usa JSON + Content-Type: text/plain + mode: no-cors   │
+   * │  para evitar el bloqueo CORS de Apps Script.           │
+   * │  El lado servidor (doPost) lee e.postData.contents.    │
+   * └─────────────────────────────────────────────────────────┘
+   */
+  async function enviarASheet(sentimiento, razon) {
+    const payload = JSON.stringify({
+      feeling:   sentimiento,
+      reason:    razon,
+      timestamp: new Date().toISOString()
+    });
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method:  'POST',
+      mode:    'no-cors',          // necesario para Apps Script desde otro origen
+      headers: { 'Content-Type': 'text/plain' },
+      body:    payload
+    });
+    // Con no-cors la respuesta es opaque (resp.ok siempre false).
+    // Si no lanza excepción, el envío llegó.
+    return resp;
+  }
+
+  /* ── DATOS DE EJEMPLO ── */
   const FUENTES = [
     "'Permanent Marker', cursive",
     "'Shadows Into Light', cursive",
@@ -576,10 +323,6 @@
     "'Righteous', cursive",
     "'Fredoka One', cursive",
   ];
-
-  /* ──────────────────────────────
-     DATOS DE EJEMPLO
-  ────────────────────────────── */
   const EJEMPLOS = [
     { sentimiento: '¡Hoy me siento feliz!',      razon: 'El sol está brillando y vi a mis amigos.' },
     { sentimiento: 'Un poco estresado.',          razon: 'El trabajo ha sido muy exigente.' },
@@ -588,27 +331,18 @@
     { sentimiento: 'Un poco ansioso.',            razon: 'Tengo presentación importante mañana.' },
   ];
 
-
   /* ══════════════════════════════
-     DEFINICIÓN DE MÓDULOS
+     MÓDULOS
   ══════════════════════════════ */
-
   const MODULOS = [
 
-    /* ────────────────────────────────────────────
-       MÓDULO: FORMULARIO
-       Permite a los estudiantes contar cómo se
-       sienten y enviar el dato a Google Sheets.
-    ──────────────────────────────────────────── */
+    /* ── FORMULARIO ── */
     {
-      nombre: 'formulario',
-      etiqueta: '📝 Formulario',
-      activo: true,
+      nombre: 'formulario', etiqueta: '📝 Formulario', activo: true,
 
       init() {
         document.getElementById('seccion-formulario').style.display = 'flex';
         document.getElementById('contenedor-enviar').style.display  = 'block';
-        // Clonar botón para limpiar listeners previos
         const viejo = document.getElementById('btn-enviar');
         const nuevo = viejo.cloneNode(true);
         viejo.replaceWith(nuevo);
@@ -623,33 +357,27 @@
       async _enviar() {
         const sentimiento = document.getElementById('input-sentimiento').value.trim().slice(0, 300);
         const razon       = document.getElementById('input-razon').value.trim().slice(0, 300);
-
         if (!sentimiento) { notif('¡Contanos cómo te sentís!', 'error'); return; }
 
         const btn = document.getElementById('btn-enviar');
         btn.disabled = true;
         spinner(true);
 
-        // Guardar offline como respaldo inmediato
-        const pendientes = leerLS('pendientes', []);
-        pendientes.push({ sentimiento, razon, ts: Date.now() });
-        guardarLS('pendientes', pendientes);
-
         try {
-          const fd = new FormData();
-          fd.append('feeling',   sentimiento);
-          fd.append('reason',    razon);
-          fd.append('timestamp', new Date().toISOString());
-          await fetch(APPS_SCRIPT_URL, { method: 'POST', body: fd });
+          await enviarASheet(sentimiento, razon);
           notif('¡Gracias por compartir! Tus sentimientos volaron ☁️', 'success');
+          // Limpiar pendientes de este dato si estaba guardado offline
         } catch(e) {
+          // Solo guardar offline si falló el envío
+          const pendientes = leerLS('pendientes', []);
+          pendientes.push({ sentimiento, razon, ts: Date.now() });
+          guardarLS('pendientes', pendientes);
           notif('Sin conexión — guardado para sincronizar más tarde.', 'info');
         } finally {
           btn.disabled = false;
           spinner(false);
         }
 
-        // Crear nube visual si ese módulo está activo
         const modNubes = MODULOS.find(m => m.nombre === 'nubes');
         if (modNubes?.activo) modNubes.crearNube(sentimiento, razon);
 
@@ -658,21 +386,13 @@
       },
     },
 
-
-    /* ────────────────────────────────────────────
-       MÓDULO: NUBES FLOTANTES
-       Muestra tarjetas flotantes con los
-       sentimientos. Triple clic = corazón secreto.
-    ──────────────────────────────────────────── */
+    /* ── NUBES FLOTANTES ── */
     {
-      nombre: 'nubes',
-      etiqueta: '☁️ Nubes flotantes',
-      activo: true,
+      nombre: 'nubes', etiqueta: '☁️ Nubes flotantes', activo: true,
       _zIndex: 1,
 
       init() {
         document.getElementById('seccion-nubes').style.display = 'block';
-        // Cargar ejemplos de forma escalonada
         EJEMPLOS.forEach((ej, i) =>
           setTimeout(() => this.crearNube(ej.sentimiento, ej.razon), i * 400)
         );
@@ -687,15 +407,12 @@
       crearNube(sentimiento, razon) {
         const cont = document.getElementById('contenedor-nubes');
         if (!cont || cont.style.display === 'none') return;
-
-        // Máximo 10 nubes visibles
         const nubes = cont.querySelectorAll('.nube');
         if (nubes.length >= 10) nubes[0].remove();
 
         const nube = document.createElement('div');
         nube.className = 'nube';
 
-        // Contenido seguro — sin innerHTML con datos de usuario
         const texto = document.createElement('div');
         texto.className = 'nube-texto';
         texto.style.fontFamily = FUENTES[Math.floor(Math.random() * FUENTES.length)];
@@ -705,10 +422,8 @@
         texto.appendChild(fs);
 
         if (razon) {
-          const br = document.createElement('br');
-          const rz = document.createTextNode(razon);
-          texto.appendChild(br);
-          texto.appendChild(rz);
+          texto.appendChild(document.createElement('br'));
+          texto.appendChild(document.createTextNode(razon));
         }
 
         const pista = document.createElement('div');
@@ -718,7 +433,6 @@
         nube.appendChild(texto);
         nube.appendChild(pista);
 
-        // Posición aleatoria
         const maxL = Math.max(0, cont.offsetWidth  - 300);
         const maxT = Math.max(0, cont.offsetHeight - 180);
         nube.style.left            = Math.floor(Math.random() * (maxL || 200)) + 'px';
@@ -726,23 +440,15 @@
         nube.style.animationDelay  = (Math.random() * 4) + 's';
         nube.style.animationDuration = (6 + Math.random() * 4) + 's';
 
-        // Lógica de clics
         let clics = 0, ultimoClic = 0;
         nube.addEventListener('click', () => {
           const ahora = Date.now();
-          // Traer al frente
           this._zIndex++;
           nube.style.zIndex = this._zIndex;
-
           if (ahora - ultimoClic < 4500) {
             clics++;
-            if (clics >= 3) {
-              this._corazon(nube);
-              clics = 0;
-            }
-          } else {
-            clics = 1;
-          }
+            if (clics >= 3) { this._corazon(nube); clics = 0; }
+          } else { clics = 1; }
           ultimoClic = ahora;
         });
 
@@ -761,20 +467,10 @@
       },
     },
 
-
-    /* ────────────────────────────────────────────
-       MÓDULO: JUEGO DE CÍRCULOS
-       · Clic en círculo de color → suma 1 punto y genera 2 más
-       · Círculo celeste-blanco (aleatorio) → resetea puntaje a 0
-       · Diseño inline bajo las nubes, no intrusivo
-    ──────────────────────────────────────────── */
+    /* ── JUEGO DE CÍRCULOS ── */
     {
-      nombre: 'juego',
-      etiqueta: '🎮 Juego de círculos',
-      activo: true,
-      _timer: null,
-      _puntos: 0,
-      _MAX: 12, // máximo de círculos simultáneos para no sobrecargar
+      nombre: 'juego', etiqueta: '🎮 Juego de círculos', activo: true,
+      _timer: null, _puntos: 0, _MAX: 12,
 
       init() {
         const sec = document.getElementById('seccion-juego');
@@ -801,21 +497,18 @@
         const sec = document.getElementById('seccion-juego');
         sec.querySelectorAll('.nube-juego').forEach(n => n.remove());
         clearTimeout(this._timer);
-        this._crearCirculo(false); // primer círculo de color
+        this._crearCirculo(false);
         this._programarReset();
       },
 
       _crearCirculo(esReset = false) {
         const sec = document.getElementById('seccion-juego');
         if (!sec || sec.style.display === 'none') return;
-
-        // Límite de círculos para no saturar pantalla pequeña
         const existentes = sec.querySelectorAll('.nube-juego').length;
         if (existentes >= this._MAX) return;
 
         const rect = sec.getBoundingClientRect();
-        const tam  = 60;
-        const marT = 34; // bajo la cabecera
+        const tam  = 60, marT = 34;
 
         const n = document.createElement('div');
         n.className = 'nube-juego';
@@ -823,14 +516,13 @@
         if (esReset) {
           n.classList.add('nube-juego-reset');
         } else {
-          // Color aleatorio vivo, pero que NO sea celeste
-          const h = Math.floor(Math.random() * 300) + 10; // evita 180-210 (celeste)
+          const h = Math.floor(Math.random() * 300) + 10;
           const s = 55 + Math.floor(Math.random() * 30);
           const l = 72 + Math.floor(Math.random() * 15);
           n.style.background = `hsl(${h},${s}%,${l}%)`;
         }
 
-        const maxLeft = Math.max(rect.width - tam - 8, 10);
+        const maxLeft = Math.max(rect.width  - tam - 8, 10);
         const maxTop  = Math.max(rect.height - tam - marT, 10);
         n.style.left = (8 + Math.random() * maxLeft) + 'px';
         n.style.top  = (marT + Math.random() * maxTop) + 'px';
@@ -838,7 +530,6 @@
         n.addEventListener('pointerdown', (e) => {
           e.stopPropagation();
           if (n.classList.contains('saliendo')) return;
-
           if (esReset) {
             this._puntos = 0;
             this._actualizarPts();
@@ -848,14 +539,13 @@
             this._puntos++;
             this._actualizarPts();
             this._quitar(n);
-            // Genera 2 más solo si hay espacio
             setTimeout(() => { this._crearCirculo(); }, 80);
             setTimeout(() => { this._crearCirculo(); }, 160);
           }
         });
 
         sec.appendChild(n);
-        n.offsetHeight; // forzar reflow para activar transición
+        n.offsetHeight;
         n.classList.add('visible');
       },
 
@@ -865,7 +555,6 @@
       },
 
       _programarReset() {
-        // El círculo celeste aparece cada 8-18 segundos
         const delay = 8000 + Math.random() * 10000;
         this._timer = setTimeout(() => {
           const sec = document.getElementById('seccion-juego');
@@ -877,20 +566,9 @@
       },
     },
 
-
-    /* ────────────────────────────────────────────
-       MÓDULO: MASCOTA MAIA (oneko)
-       Gato animado que sigue al cursor.
-
-       Créditos:
-       · oneko.js por adryd325 — github.com/adryd325/oneko.js (MIT)
-       · Arte original: @_Anunnery (twitter.com/_Anunnery)
-       · Sprite: adryd.com/static/neko/neko.gif
-    ──────────────────────────────────────────── */
+    /* ── MASCOTA MAIA (oneko) ── */
     {
-      nombre: 'oneko',
-      etiqueta: '🐱 Mascota Maia',
-      activo: true,
+      nombre: 'oneko', etiqueta: '🐱 Mascota Maia', activo: true,
 
       init() {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -909,7 +587,6 @@
       },
 
       _lanzar() {
-        // ── Basado en oneko.js (MIT) — github.com/adryd325/oneko.js ──
         const el = document.createElement('div');
         el.id = 'oneko';
         document.body.appendChild(el);
@@ -917,8 +594,7 @@
         let px = Math.random() * (window.innerWidth  - 64) + 32;
         let py = Math.random() * (window.innerHeight - 64) + 32;
         let mx = px - 32, my = py - 32;
-        let mouseDown = false;
-        let frames = 0, idle = 0, idleAnim = null, idleFrame = 0;
+        let mouseDown = false, frames = 0, idle = 0, idleAnim = null, idleFrame = 0;
         const VEL = 10;
 
         const S = {
@@ -944,8 +620,8 @@
           idle++;
           if (idle > 10 && !idleAnim) {
             const opts = ['sleeping','scratchSelf'];
-            if (px < 32)                     opts.push('scratchWallW');
-            if (py < 32)                     opts.push('scratchWallN');
+            if (px < 32)                      opts.push('scratchWallW');
+            if (py < 32)                      opts.push('scratchWallN');
             if (px > window.innerWidth  - 32) opts.push('scratchWallE');
             if (py > window.innerHeight - 32) opts.push('scratchWallS');
             idleAnim = opts[Math.floor(Math.random() * opts.length)];
@@ -976,11 +652,7 @@
           const dist = Math.sqrt(dx*dx + dy*dy);
           if (dist < VEL || dist < 48) { tickIdle(dx, dy); return; }
           idleAnim = null; idleFrame = 0;
-          if (idle > 1) {
-            sprite('alert', 0);
-            idle = Math.min(idle, 7) - 1;
-            return;
-          }
+          if (idle > 1) { sprite('alert', 0); idle = Math.min(idle, 7) - 1; return; }
           let dir  = dy / dist >  0.5 ? 'N' : '';
           dir     += dy / dist < -0.5 ? 'S' : '';
           dir     += dx / dist >  0.5 ? 'W' : '';
@@ -996,7 +668,6 @@
 
         el.style.left = `${px - 17}px`;
         el.style.top  = `${py - 17}px`;
-
         document.onmousemove = e => { mx = e.clientX; my = e.clientY; };
         function toggleMouse(e) {
           mouseDown = ((e.buttons !== undefined ? e.buttons : e.which) & 1) === 1;
@@ -1008,23 +679,15 @@
       },
     },
 
-
-    /* ────────────────────────────────────────────
-       MÓDULO: SINCRONIZACIÓN OFFLINE
-       Cuando vuelve la conexión, reintenta enviar
-       los datos guardados localmente.
-    ──────────────────────────────────────────── */
+    /* ── SYNC OFFLINE ── */
     {
-      nombre: 'offline',
-      etiqueta: '📡 Sync offline',
-      activo: true,
+      nombre: 'offline', etiqueta: '📡 Sync offline', activo: true,
       _handler: null,
 
       init() {
         this._handler = () => this._sincronizar();
         window.addEventListener('online',  this._handler);
         window.addEventListener('offline', () => notif('Sin conexión. Los datos se guardan localmente.', 'info'));
-        // Intentar al cargar si ya hay datos pendientes
         if (navigator.onLine) this._sincronizar();
       },
 
@@ -1039,11 +702,7 @@
         let ok = 0;
         for (const d of pendientes) {
           try {
-            const fd = new FormData();
-            fd.append('feeling',   d.sentimiento || '');
-            fd.append('reason',    d.razon       || '');
-            fd.append('timestamp', new Date(d.ts).toISOString());
-            await fetch(APPS_SCRIPT_URL, { method: 'POST', body: fd });
+            await enviarASheet(d.sentimiento || '', d.razon || '');
             ok++;
           } catch(e) { break; }
         }
@@ -1054,48 +713,38 @@
       },
     },
 
-  ]; // ← fin de MODULOS
+  ]; // fin MODULOS
 
-
-  /* ══════════════════════════════
-     MOTOR DEL PANEL
-  ══════════════════════════════ */
-
+  /* ── PANEL ── */
   function montarPanel() {
     const contenido = document.getElementById('panel-contenido');
     const header    = document.getElementById('panel-header');
     const panel     = document.getElementById('panel-modulos');
 
-    // Toggle abrir/cerrar
-    header.addEventListener('click', () => {
-      panel.classList.toggle('abierto');
-    });
+    header.addEventListener('click', () => panel.classList.toggle('abierto'));
 
     MODULOS.forEach(mod => {
       const label = document.createElement('label');
       label.className = 'mod-fila';
 
       const chk = document.createElement('input');
-      chk.type    = 'checkbox';
-      chk.checked = mod.activo;
+      chk.type = 'checkbox'; chk.checked = mod.activo;
 
       const txt = document.createElement('span');
       txt.textContent = mod.etiqueta;
 
       const badge = document.createElement('span');
-      badge.className = 'mod-badge ' + (mod.activo ? 'on' : 'off');
+      badge.className   = 'mod-badge ' + (mod.activo ? 'on' : 'off');
       badge.textContent = mod.activo ? 'ON' : 'OFF';
 
       chk.addEventListener('change', () => {
         mod.activo = chk.checked;
-        badge.className  = 'mod-badge ' + (mod.activo ? 'on' : 'off');
+        badge.className   = 'mod-badge ' + (mod.activo ? 'on' : 'off');
         badge.textContent = mod.activo ? 'ON' : 'OFF';
         try {
           if (mod.activo) mod.init();
           else            mod.destroy();
-        } catch(e) {
-          console.error(`Error en módulo "${mod.nombre}":`, e);
-        }
+        } catch(e) { console.error(`Error en módulo "${mod.nombre}":`, e); }
       });
 
       label.appendChild(chk);
@@ -1105,10 +754,7 @@
     });
   }
 
-  /* ══════════════════════════════
-     ARRANQUE
-  ══════════════════════════════ */
-
+  /* ── ARRANQUE ── */
   document.addEventListener('DOMContentLoaded', () => {
     montarPanel();
     MODULOS.forEach(mod => {
@@ -1118,7 +764,6 @@
       }
     });
   });
-
   </script>
 </body>
 </html>
